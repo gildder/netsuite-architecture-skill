@@ -48,11 +48,17 @@ Formato: `[prefijo]_[tipo]_[nombre].ts`
 
 | Tipo | Código | Ejemplo |
 |------|--------|---------|
-| Suitelet | sl | gw_sl_facturas.ts |
-| Restlet | rs | gw_rs_pedidos.ts |
+| Client Script | cs | gw_cs_validacion.ts |
 | User Event | ue | gw_ue_factura.ts |
-| Scheduled | ss | gw_ss_sync.ts |
-| Map/Reduce | mr | gw_mr_import.ts |
+| Suitelet | sl | gw_sl_facturas.ts |
+| RESTlet | rl | gw_rl_pedidos.ts |
+| Portlet | pl | gw_pl_dashboard.ts |
+| Scheduled | sc | gw_sc_sincronizacion.ts |
+| Map/Reduce | mr | gw_mr_importacion.ts |
+| SuiteGL | gl | gl_asiento_automatico.ts |
+| Workflow Action | wa | wa_aprobacion_pedido.ts |
+| Mass Update | mu | mu_actualizacion_masiva.ts |
+| Bundle Installation | bi | bi_instalacion_bundle.ts |
 
 ## OrkidNS - Agente de Arquitectura
 

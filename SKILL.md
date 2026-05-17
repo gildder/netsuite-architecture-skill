@@ -335,16 +335,42 @@ src/TypeScripts/[nombre]/
 │       ├── Infrastructure/ (persistence, adapters)
 │       └── validations/
 ├── Interface/
-│   ├── [prefijo]_rs_[nombre].ts
-│   ├── [prefijo]_sl_[nombre].ts
-│   ├── [prefijo]_ue_[nombre].ts
-│   ├── [prefijo]_ss_[nombre].ts
-│   └── [prefijo]_mr_[nombre].ts
+│   ├── [prefijo]_cs_[nombre].ts   ← Client Script
+│   ├── [prefijo]_ue_[nombre].ts   ← User Event
+│   ├── [prefijo]_sl_[nombre].ts   ← Suitelet
+│   ├── [prefijo]_rl_[nombre].ts   ← RESTlet
+│   ├── [prefijo]_pl_[nombre].ts   ← Portlet
+│   ├── [prefijo]_sc_[nombre].ts   ← Scheduled
+│   ├── [prefijo]_mr_[nombre].ts   ← Map/Reduce
+│   ├── [prefijo]_gl_[nombre].ts   ← SuiteGL
+│   ├── [prefijo]_wa_[nombre].ts   ← Workflow Action
+│   ├── [prefijo]_mu_[nombre].ts   ← Mass Update
+│   └── [prefijo]_bi_[nombre].ts   ← Bundle Installation
 └── Shared/
     ├── domain/ (result.ts, guard.ts)
     ├── utils/
     └── constants/
 ```
+
+---
+
+## Nomenclatura de Scripts NetSuite
+
+Formato: `[prefijo]_[tipo]_[nombre].ts`
+
+| Tipo | Código | Ejemplo |
+|------|--------|---------|
+| Client Script | cs | gw_cs_validacion.ts |
+| User Event | ue | gw_ue_factura.ts |
+| Suitelet | sl | gw_sl_facturas.ts |
+| RESTlet | rl | gw_rl_pedidos.ts |
+| Portlet | pl | gw_pl_dashboard.ts |
+| Scheduled | sc | gw_sc_sincronizacion.ts |
+| Map/Reduce | mr | gw_mr_importacion.ts |
+| SuiteGL | gl | gl_asiento_automatico.ts |
+| Workflow Action | wa | wa_aprobacion_pedido.ts |
+| Mass Update | mu | mu_actualizacion_masiva.ts |
+| Bundle Installation | bi | bi_instalacion_bundle.ts |
 
 ---
 
