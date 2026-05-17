@@ -14,68 +14,237 @@ description: |-
   Examples:
   - user: "quiero crear un proyecto netsuite" → hacer PREGUNTA 1 primero
   - user: "crear proyecto sales" → hacer preguntas de clasificación
-  - user: "nuevo proyecto para fakturacion" → hacer preguntas + crear estructura
+  - user: "nuevo proyecto para facturacion" → hacer preguntas + crear estructura
 ---
 compatibility: opencode,claude-code,cursor,codex
 metadata:
-  version: "1.4"
+  version: "1.5"
   author: Gateway Team
   license: MIT
 ---
 
 # NetSuite Clean Architecture - Skill Guide
 
-## Flujo Completo de Creación de Proyecto
+## ⚠️ IMPORTANTE: Flujo de Preguntas
 
-Cuando el usuario quiere crear un proyecto NetSuite nuevo, SIGUE ESTE FLUGO:
-
----
-
-### Paso 1: Preguntar DATOS DEL PROYECTO
-
-```
-📍 PREGUNTAS INICIALES: Datos del proyecto
-
-1. ¿Dónde querés crear el proyecto?
-   Ejemplo: "C:\Users\gguerrero\Documents\proyectos\mi-proyecto"
-
-2. ¿Cuál es el nombre del proyecto? (nombre de carpeta)
-   Ejemplo: "facturacion", "tienda-online", "marketplace"
-
-3. ¿Cuál es el prefijo del proyecto? (para scripts NetSuite)
-   Ejemplo: "gw" → gw_sl_facturas.ts, gw_rs_pedidos.ts
-   Este prefijo aparece al inicio de todos los scripts NetSuite.
-   Debe ser en minúsculas, sin guiones.
-
-4. ¿Cuál es el dominio principal? (Sales, Inventory, Customer, etc.)
-   Ejemplo: "Sales", "Inventory", "Customer"
-```
-
-**Espera todas las respuestas del usuario.**
+**Este skill debe hacer las preguntas UNA A LA VEZ.**
+- NO agrupe múltiples preguntas en un solo mensaje
+- NO muestre la siguiente pregunta hasta que el usuario responda la actual
+- Después de cada pregunta, espere la respuesta del usuario antes de continuar
 
 ---
 
-### Paso 2-6: Las 5 PREGUNTAS de clasificación
+## FASE 1: Preguntas Iniciales del Proyecto
 
-Hacerlas UNA A LA VEZ.
+### PREGUNTA 1/9: Ubicación del Proyecto
+
+**Solo muestre esta pregunta. No muestre las demás.**
+
+```
+📍 PREGUNTA 1/9: ¿Dónde querés crear el proyecto?
+
+Por favor, proporciona la ruta completa donde se creará la carpeta del proyecto.
+
+Ejemplos de respuesta:
+- "C:\Users\gguerrero\Documents\proyectos\mi-proyecto"
+- "D:\NetSuite\proyectos\nuevo"
+- "./nuevo-proyecto"
+```
+
+**ESPERE la respuesta del usuario. Luego continúe a la PREGUNTA 2.**
 
 ---
 
-### Paso 7: RESULTADO + ACCIÓN
+### PREGUNTA 2/9: Nombre del Proyecto
 
-Después de las 5 preguntas:
+**Solo después de que el usuario responda la pregunta 1.**
 
 ```
-🎯 RESULTADO: Tu proyecto es [PEQUEÑO/MEDIANO/GRANDE]
+📍 PREGUNTA 2/9: ¿Cuál es el nombre del proyecto?
+
+Este nombre se usará para:
+- Nombre de la carpeta del proyecto
+- Nombre en package.json
+- Parte del nombre de los archivos compilados
+
+Ejemplos de respuesta:
+- "facturacion"
+- "tienda-online"
+- "marketplace"
+- "ventas-sucursales"
+```
+
+**ESPERE la respuesta del usuario. Luego continúe a la PREGUNTA 3.**
+
+---
+
+### PREGUNTA 3/9: Prefijo del Proyecto
+
+**Solo después de que el usuario responda la pregunta 2.**
+
+```
+📍 PREGUNTA 3/9: ¿Cuál es el prefijo del proyecto?
+
+El prefijo se usará para identificar tus scripts en NetSuite.
+Aparecerá al inicio de todos los archivos de scripts.
+
+Formato: [prefijo]_[tipo]_[nombre].ts
+
+Ejemplos de respuesta:
+- "gw" → gw_sl_facturas.ts, gw_rs_pedidos.ts
+- "acme" → acme_sl_facturas.ts, acme_rs_pedidos.ts
+- "tienda" → tienda_sl_carrito.ts
+
+⚠️ IMPORTANTE: El prefijo debe ser:
+- En minúsculas
+- Sin guiones
+- Sin espacios
+- Solo letras y números
+```
+
+**ESPERE la respuesta del usuario. Luego continúe a la PREGUNTA 4.**
+
+---
+
+### PREGUNTA 4/9: Dominio Principal
+
+**Solo después de que el usuario responda la pregunta 3.**
+
+```
+📍 PREGUNTA 4/9: ¿Cuál es el dominio principal?
+
+El dominio representa el área funcional principal del proyecto.
+
+Ejemplos de respuesta:
+- "Sales" → Pedidos, facturas, clientes
+- "Inventory" → Artículos, stock, almacenes
+- "Customer" → Clientes, contactos
+- "Accounting" → asientos, impuestos
+- "Purchasing" → órdenes de compra, proveedores
+```
+
+**ESPERE la respuesta del usuario. Luego continúe a la PREGUNTA 5.**
+
+---
+
+## FASE 2: Preguntas de Clasificación
+
+### PREGUNTA 5/9: Cantidad de Scripts
+
+**Solo después de que el usuario responda la pregunta 4.**
+
+```
+📋 PREGUNTA 5/9: ¿Cuántos scripts NetSuite tendrá tu proyecto?
+
+[A] POCOS (1-5 scripts)
+    → Ejemplo: un Restlet simple o Suitelet básico
+
+[B] MEDIO (6-15 scripts)
+    → Ejemplo: CRUD completo con validaciones
+
+[C] MUCHOS (>15 scripts)
+    → Ejemplo: múltiples integraciones, colas, procesos
+```
+
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 6.**
+
+---
+
+### PREGUNTA 6/9: Dominios
+
+**Solo después de que el usuario responda la pregunta 5.**
+
+```
+📋 PREGUNTA 6/9: ¿Cuántos dominios necesitas?
+
+(Dominios = módulos de negocio diferentes)
+
+[A] SOLO 1 DOMINIO
+    → Ejemplo: solo Sales, o solo Customer
+
+[B] 2 DOMINIOS
+    → Ejemplo: Sales + Customer, Sales + Inventory
+
+[C] 3+ DOMINIOS
+    → Ejemplo: Sales + Inventory + Customer + Accounting
+```
+
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 7.**
+
+---
+
+### PREGUNTA 7/9: Operaciones
+
+**Solo después de que el usuario responda la pregunta 6.**
+
+```
+📋 PREGUNTA 7/9: ¿Qué operaciones necesitas?
+
+[A] SOLO CREAR o LEER
+    → Una operación simple (solo lectura o crear un registro)
+
+[B] CRUD COMPLETO
+    → Crear, Leer, Actualizar, Borrar
+
+[C] CRUD + PROCESOS ASÍNCRONOS + INTEGRACIONES
+    → Transacciones complejas, colas, APIs externas, procesos batch
+```
+
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 8.**
+
+---
+
+### PREGUNTA 8/9: Integraciones
+
+**Solo después de que el usuario responda la pregunta 7.**
+
+```
+📋 PREGUNTA 8/9: ¿Tienes integraciones externas?
+
+[A] NINGUNA o MÁXIMO 1
+    → Solo operaciones internas de NetSuite
+
+[B] 2-3 INTEGRACIONES
+    → Gateway, VTEX, APIs de pagos, servicios externos
+
+[C] MÁS DE 3
+    → Múltiples sistemas externos (ERP, CRM, logística, etc.)
+```
+
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe al RESULTADO.**
+
+---
+
+## FASE 3: Resultado de Clasificación
+
+**Solo después de que el usuario responda la pregunta 8.**
+
+Analice las respuestas y muestre el resultado:
+
+```
+🎯 RESULTADO DE CLASIFICACIÓN
+
+Basado en tus respuestas:
+- Scripts: [A/B/C]
+- Dominios: [A/B/C]
+- Operaciones: [A/B/C]
+- Integraciones: [A/B/C]
+- Líneas de código (estimado): [A/B/C]
+
+Tu proyecto es: [PEQUEÑO/MEDIANO/GRANDE]
+
+---
 
 Datos del proyecto:
-- Ruta: [ruta]
-- Nombre: [nombre]
-- Prefijo: [prefijo]
-- Dominio: [dominio]
+- Ubicación: [ruta proporcionada en pregunta 1]
+- Nombre: [nombre proporcionado en pregunta 2]
+- Prefijo: [prefijo proporcionado en pregunta 3]
+- Dominio: [dominio proporcionado en pregunta 4]
+
+---
 
 Ahora voy a:
-1. Clonar el repositorio template
+1. Clonar el repositorio template en [ruta]
 2. Configurar package.json, tsconfig.json
 3. Crear la estructura TypeScripts según tu clasificación
 4. Crear scripts NetSuite con prefijo [prefijo]_
@@ -83,254 +252,93 @@ Ahora voy a:
 
 ---
 
-## Estructuras Detalladas por Tipo de Proyecto
+## FASE 4: Pregunta Adicional (solo para MEDIANO)
+
+**Solo si el resultado fue MEDIANO.**
+
+```
+📋 PREGUNTA 9/9: Tu proyecto es MEDIANO.
+
+¿Querés usar carpeta Modules?
+
+[A] SÍ - Mi proyecto tendrá 3+ dominios o prevé crecer
+[B] NO - Solo tendré 1-2 dominios y no pienso agregar más
+```
+
+**ESPERE la respuesta del usuario (A o B).**
+**Luego proceda a crear el proyecto.**
 
 ---
 
-## 🏠 PROYECTO PEQUEÑO
+## Estructuras por Tipo de Proyecto
 
-**Cuándo usarlo:** 1 dominio, ≤5 scripts, ≤1500 líneas, operaciones simples
-
-### Estructura de carpetas:
+### 🏠 PROYECTO PEQUEÑO
 
 ```
-src/TypeScripts/[nombre-proyecto]/
-├── [Dominio]/                              ← Dominio directo (ej: Sales)
-│   ├── [dominio].service.ts               ← Lógica de negocio principal
-│   ├── [dominio].repository.ts            ← Acceso a datos (NetSuite)
-│   └── [dominio].types.ts                 ← Definición de tipos
-├── Interface/
-│   ├── gw_[tipo]_[nombre].ts              ← Script NetSuite
-│   └── Suitelets/
-│       └── [prefijo]_sl_[nombre].ts       ← Ej: gw_sl_facturas.ts
-│   └── Restlets/
-│       └── [prefijo]_rs_[nombre].ts       ← Ej: gw_rs_pedidos.ts
-└── Shared/
-    └── utils/
-        └── logger.ts
-```
-
-### Ejemplo (proyecto "facturas", prefijo "gw", dominio "Sales"):
-
-```
-src/TypeScripts/facturas/
-├── Sales/
-│   ├── sales.service.ts
-│   ├── sales.repository.ts
-│   └── sales.types.ts
-├── Interface/
-│   ├── gw_sl_facturas.ts
-│   └── Restlets/
-│       └── gw_rs_facturas.ts
-└── Shared/
-    └── utils/
-        └── logger.ts
-```
-
-**Scripts NetSuite creados:**
-- `gw_sl_facturas.ts` → Suitelet
-- `gw_rs_facturas.ts` → Restlet
-
----
-
-## 🏢 PROYECTO MEDIANO (SIN carpeta Modules)
-
-**Cuándo usarlo:** 1-2 dominios, 6-15 scripts, CRUD completo
-
-### Estructura:
-
-```
-src/TypeScripts/[nombre-proyecto]/
+src/TypeScripts/[nombre]/
 ├── [Dominio]/
-│   ├── Domain/
-│   │   └── entities/
-│   │       └── [dominio].entity.ts
-│   ├── Application/
-│   │   ├── services/
-│   │   │   └── [dominio].service.ts
-│   │   └── transforms/
-│   │       └── [dominio].transform.ts
-│   ├── Infrastructure/
-│   │   └── repositories/
-│   │       └── [dominio].repository.ts
-│   └── validations/
-│       └── [dominio].validation.ts
+│   ├── [dominio].service.ts
+│   ├── [dominio].repository.ts
+│   └── [dominio].types.ts
 ├── Interface/
-│   ├── Restlets/
-│   │   └── [prefijo]_rs_[nombre].ts
-│   ├── Suitelets/
-│   │   └── [prefijo]_sl_[nombre].ts
-│   └── UserEvents/
-│       └── [prefijo]_ue_[nombre].ts
+│   └── [prefijo]_sl_[nombre].ts
 └── Shared/
-    ├── utils/
-    │   └── logger.ts
-    └── constants/
-        └── [dominio].constants.ts
-```
-
-### Ejemplo (proyecto "tienda-online", prefijo "gw", dominio "Sales"):
-
-```
-src/TypeScripts/tienda-online/
-├── Sales/
-│   ├── Domain/
-│   │   └── entities/
-│   │       └── sales.entity.ts
-│   ├── Application/
-│   │   ├── services/
-│   │   │   └── sales.service.ts
-│   │   └── transforms/
-│   │       └── sales.transform.ts
-│   ├── Infrastructure/
-│   │   └── repositories/
-│   │       └── sales.repository.ts
-│   └── validations/
-│       └── sales.validation.ts
-├── Interface/
-│   ├── Restlets/
-│   │   └── gw_rs_pedidos.ts
-│   ├── Suitelets/
-│   │   └── gw_sl_carrito.ts
-│   └── UserEvents/
-│       └── gw_ue_factura.ts
-└── Shared/
-    ├── utils/
-    │   └── logger.ts
-    └── constants/
-        └── sales.constants.ts
+    └── utils/
 ```
 
 ---
 
-## 🏢 PROYECTO MEDIANO (CON carpeta Modules)
-
-**Cuándo usarlo:** 2+ dominios que crescerán
-
-### Estructura:
+### 🏢 PROYECTO MEDIANO
 
 ```
-src/TypeScripts/[nombre-proyecto]/
+src/TypeScripts/[nombre]/
+├── [Dominio]/  (SIN Modules)
+│   ├── Domain/entities/
+│   ├── Application/services/, transforms/
+│   ├── Infrastructure/repositories/
+│   └── validations/
+├── Interface/
+│   ├── [prefijo]_rs_[nombre].ts
+│   ├── [prefijo]_sl_[nombre].ts
+│   └── [prefijo]_ue_[nombre].ts
+└── Shared/
+```
+
+O con Modules si respondió [A] en pregunta adicional:
+
+```
+src/TypeScripts/[nombre]/
 ├── Modules/
 │   └── [Dominio]/
-│       ├── Domain/
-│       ├── Application/
-│       ├── Infrastructure/
+│       ├── Domain/, Application/, Infrastructure/
 │       └── validations/
 ├── Interface/
-│   ├── Restlets/
-│   ├── Suitelets/
-│   └── UserEvents/
 └── Shared/
-    ├── utils/
-    └── constants/
 ```
 
 ---
 
-## 🏰 PROYECTO GRANDE (Arquitectura Hexagonal completa)
-
-**Cuándo usarlo:** 3+ dominios, >15 scripts, múltiples integraciones
-
-### Estructura:
+### 🏰 PROYECTO GRANDE
 
 ```
-src/TypeScripts/[nombre-proyecto]/
+src/TypeScripts/[nombre]/
 ├── Modules/
 │   └── [Dominio]/
-│       ├── Domain/
-│       │   ├── entities/
-│       │   ├── value-objects/
-│       │   ├── events/
-│       │   └── services/
-│       ├── Application/
-│       │   ├── use-cases/
-│       │   ├── ports/
-│       │   │   ├── inbound/
-│       │   │   └── outbound/
-│       │   ├── dtos/
-│       │   ├── services/
-│       │   └── transforms/
-│       ├── Infrastructure/
-│       │   ├── persistence/
-│       │   └── adapters/
-│       └── validations/
-├── Interface/
-│   ├── Restlets/      → [prefijo]_rs_[nombre].ts
-│   ├── Suitelets/     → [prefijo]_sl_[nombre].ts
-│   ├── UserEvents/    → [prefijo]_ue_[nombre].ts
-│   ├── Scheduled/     → [prefijo]_ss_[nombre].ts
-│   └── MapReduce/     → [prefijo]_mr_[nombre].ts
-└── Shared/
-    ├── domain/
-    │   ├── result.ts
-    │   └── guard.ts
-    ├── utils/
-    └── constants/
-```
-
-### Ejemplo (proyecto "marketplace", prefijo "gw", dominio "Sales"):
-
-```
-src/TypeScripts/marketplace/
-├── Modules/
-│   └── Sales/
 │       ├── Domain/ (entities, value-objects, events, services)
 │       ├── Application/ (use-cases, ports, dtos, services, transforms)
 │       ├── Infrastructure/ (persistence, adapters)
 │       └── validations/
 ├── Interface/
-│   ├── Restlets/
-│   │   └── gw_rs_orders.ts
-│   ├── Suitelets/
-│   │   └── gw_sl_checkout.ts
-│   ├── UserEvents/
-│   │   └── gw_ue_invoice.ts
-│   ├── Scheduled/
-│   │   └── gw_ss_sync.ts
-│   └── MapReduce/
-│       └── gw_mr_import.ts
+│   ├── [prefijo]_rs_[nombre].ts
+│   ├── [prefijo]_sl_[nombre].ts
+│   ├── [prefijo]_ue_[nombre].ts
+│   ├── [prefijo]_ss_[nombre].ts
+│   └── [prefijo]_mr_[nombre].ts
 └── Shared/
-    ├── domain/
+    ├── domain/ (result.ts, guard.ts)
     ├── utils/
     └── constants/
 ```
-
----
-
-## Nomenclatura de Scripts NetSuite
-
-**Formato:** `[prefijo]_[tipo]_[nombre].ts`
-
-| Tipo | Código | Ejemplo completo |
-|------|--------|------------------|
-| Suitelet | sl | gw_sl_facturas |
-| Restlet | rs | gw_rs_pedidos |
-| User Event | ue | gw_ue_factura |
-| Scheduled | ss | gw_ss_sincronizacion |
-| Map/Reduce | mr | gw_mr_importacion |
-| Client Script | cs | gw_cs_validacion |
-| Portlet | pt | gw_pt_dashboard |
-
----
-
-## Configuraciones Automáticas
-
-### package.json:
-
-| Campo | Valor |
-|-------|-------|
-| name | [nombre-proyecto] |
-| displayName | NetSuite [Dominio] Project |
-| description | NetSuite TypeScript project for [Dominio] - [Tipo] |
-
-### tsconfig.json:
-
-| Campo | Valor |
-|-------|-------|
-| rootDir | src/TypeScripts/[nombre] |
-| outDir | src/FileCabinet/SuiteScripts/[nombre] |
-| include | src/TypeScripts/[nombre]/**/* |
 
 ---
 
