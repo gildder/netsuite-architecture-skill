@@ -7,14 +7,14 @@ Guía para crear proyectos NetSuite con TypeScript usando arquitectura limpia.
 ### Para OpenCode
 
 ```bash
-npx skills add gguerrero/netsuite-architecture-skill
+npx skills add gildder/netsuite-architecture-skill
 ```
 
 ### Para Claude Code / Cursor / Codex
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/gguerrero/netsuite-architecture-skill.git
+git clone https://github.com/gildder/netsuite-architecture-skill.git
 cd netsuite-architecture-skill
 ```
 
