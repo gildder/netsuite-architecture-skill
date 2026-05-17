@@ -2,79 +2,67 @@
 
 Guía para crear proyectos NetSuite con TypeScript usando arquitectura limpia.
 
-## Instalación
+## Características
 
-### Para OpenCode
+- ✅ Clasificación automática de proyectos (pequeño/mediano/grande)
+- ✅ Clona repositorio template automáticamente
+- ✅ Configura package.json y tsconfig.json
+- ✅ Crea estructura TypeScripts según clasificación
+- ✅ Crea scripts NetSuite con prefijo personalizado
+- ✅ Soporta Clean Architecture y Hexagonal Architecture
+
+## Instalación
 
 ```bash
 npx skills add gildder/netsuite-architecture-skill
 ```
 
-### Para Claude Code / Cursor / Codex
+## Flujo de Uso
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/gildder/netsuite-architecture-skill.git
-cd netsuite-architecture-skill
-```
+### 1. El skill pregunta los datos del proyecto:
 
-## Uso
+- **Ubicación**: Dónde crear el proyecto
+- **Nombre**: Nombre de carpeta (ej: "facturas")
+- **Prefijo**: Para scripts NetSuite (ej: "gw" → gw_sl_facturas.ts)
+- **Dominio**: Principal (ej: "Sales", "Inventory")
 
-### 1. Clasificar tu Proyecto
+### 2. Clasificación con 5 preguntas
 
-El skill te hará 5 preguntas para determinar el tamaño de tu proyecto:
+Una pregunta a la vez para determinar el tipo de proyecto.
 
-```
-1. ¿Cuántos scripts NetSuite tendrá? (A/B/C)
-2. ¿Cuántos dominios necesitas? (A/B/C)
-3. ¿Qué operaciones necesitas? (A/B/C)
-4. ¿Tienes integraciones externas? (A/B/C)
-5. ¿Cuántas líneas de código estimás? (A/B/C)
-```
+### 3. Creación automática
 
-### 2. Crear la Estructura
-
-Una vez clasificado, ejecuta el script correspondiente:
-
-```bash
-# Proyecto pequeño (sin Modules)
-./scripts/create-small.sh "src/TypeScripts/MiProyecto" "MiProyecto" "Sales"
-
-# Proyecto mediano (sin Modules)
-./scripts/create-medium.sh "src/TypeScripts/MiProyecto" "MiProyecto" "Sales" "no"
-
-# Proyecto mediano (con Modules)
-./scripts/create-medium.sh "src/TypeScripts/MiProyecto" "MiProyecto" "Sales" "yes"
-
-# Proyecto grande (con Modules)
-./scripts/create-large.sh "src/TypeScripts/MiProyecto" "MiProyecto" "Sales"
-```
-
-### 3. Compilar a JavaScript
-
-```bash
-npm install
-npm run build
-```
+El skill clona el template y configura todo automáticamente.
 
 ## Estructuras de Proyecto
 
-| Tamaño | Dominios | Scripts | Líneas | Estructura |
-|--------|----------|---------|--------|------------|
-| PEQUEÑO | 1 | ≤5 | ≤1500 | Directa |
-| MEDIANO | 1-2 | 6-15 | 1501-4000 | Capas (con/sin Modules) |
-| GRANDE | 3+ | >15 | >4000 | Módulos con Ports |
+| Tipo | Dominios | Scripts | Estructura |
+|------|----------|---------|------------|
+| PEQUEÑO | 1 | ≤5 | Directa (sin Modules) |
+| MEDIANO | 1-2 | 6-15 | Capas (con/sin Modules) |
+| GRANDE | 3+ | >15 | Hexagonal (Ports, Use Cases) |
+
+## Nomenclatura de Scripts NetSuite
+
+Formato: `[prefijo]_[tipo]_[nombre].ts`
+
+| Tipo | Código | Ejemplo |
+|------|--------|---------|
+| Suitelet | sl | gw_sl_facturas.ts |
+| Restlet | rs | gw_rs_pedidos.ts |
+| User Event | ue | gw_ue_factura.ts |
+| Scheduled | ss | gw_ss_sync.ts |
+| Map/Reduce | mr | gw_mr_import.ts |
 
 ## Documentación
 
 - [SKILL.md](SKILL.md) - Guía completa del skill
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Explicación de arquitecturas
 
-## Requisitos
+## Template
 
-- Node.js 18+
-- TypeScript 5+
-- NetSuite SDF CLI (para despliegue)
+Este skill usa el repositorio template:
+https://github.com/gildder/netsuite-ts-sdf-template
 
 ## Licencia
 

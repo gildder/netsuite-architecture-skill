@@ -9,204 +9,208 @@ description: |-
   - Entender qué es Clean Architecture y por qué se usa en NetSuite
   - Clasificar tu proyecto con preguntas simples
   - Crear la estructura correcta según el tamaño
+  - Clonar el repositorio template y configurarlo automáticamente
 
   Examples:
   - user: "quiero crear un proyecto netsuite" → hacer PREGUNTA 1 primero
-  - user: "qué arquitectura usar?" → explicar con ejemplos
-  - user: "es proyecto pequeño o grande?" → hacer PREGUNTA 1 primero
-  - user: "cómo structurar mi código?" → mostrar estructuras por tipo
-  - user: "ayúdame con clean architecture" → explicar arquitectura + mostrar ejemplos
+  - user: "crear proyecto sales" → hacer preguntas de clasificación
+  - user: "nuevo proyecto para fakturacion" → hacer preguntas + crear estructura
 ---
 compatibility: opencode,claude-code,cursor,codex
 metadata:
-  version: "1.1"
+  version: "1.4"
   author: Gateway Team
   license: MIT
 ---
 
 # NetSuite Clean Architecture - Skill Guide
 
-## Flujo de Clasificación
+## Flujo Completo de Creación de Proyecto
 
-Cuando el usuario dice "quiero crear un proyecto NetSuite" o pide ayuda para clasificar un proyecto, SIGUE ESTE FLUJO EXACTAMENTE:
-
-### Paso 1: PRIMERA PREGUNTA
-
-**Solo muestra esta pregunta al usuario. No muestres las demás.**
-
-```
-📋 PREGUNTA 1/5: ¿Cuántos scripts NetSuite tendrá tu proyecto?
-
-[A] POCOS (1-5 scripts)
-    → Ejemplo: un Restlet simple o Suitelet básico
-
-[B] MEDIO (6-15 scripts)
-    → Ejemplo: CRUD completo con validaciones
-
-[C] MUCHOS (>15 scripts)
-    → Ejemplo: múltiples integraciones, colas, procesos
-```
-
-**Espera la respuesta del usuario antes de continuar.**
+Cuando el usuario quiere crear un proyecto NetSuite nuevo, SIGUE ESTE FLUGO:
 
 ---
 
-### Paso 2: SEGUNDA PREGUNTA
-
-(Solo después de que el usuario responda la pregunta 1)
+### Paso 1: Preguntar DATOS DEL PROYECTO
 
 ```
-📋 PREGUNTA 2/5: ¿Cuántos dominios necesitas?
-(Dominios = módulos de negocio: Sales, Inventory, Customer, etc.)
+📍 PREGUNTAS INICIALES: Datos del proyecto
 
-[A] SOLO 1 DOMINIO
-    → Ejemplo: solo Sales, o solo Customer
+1. ¿Dónde querés crear el proyecto?
+   Ejemplo: "C:\Users\gguerrero\Documents\proyectos\mi-proyecto"
 
-[B] 2 DOMINIOS
-    → Ejemplo: Sales + Customer
+2. ¿Cuál es el nombre del proyecto? (nombre de carpeta)
+   Ejemplo: "facturacion", "tienda-online", "marketplace"
 
-[C] 3+ DOMINIOS
-    → Ejemplo: Sales + Inventory + Core
+3. ¿Cuál es el prefijo del proyecto? (para scripts NetSuite)
+   Ejemplo: "gw" → gw_sl_facturas.ts, gw_rs_pedidos.ts
+   Este prefijo aparece al inicio de todos los scripts NetSuite.
+   Debe ser en minúsculas, sin guiones.
+
+4. ¿Cuál es el dominio principal? (Sales, Inventory, Customer, etc.)
+   Ejemplo: "Sales", "Inventory", "Customer"
 ```
 
-**Espera la respuesta del usuario antes de continuar.**
+**Espera todas las respuestas del usuario.**
 
 ---
 
-### Paso 3: TERCERA PREGUNTA
+### Paso 2-6: Las 5 PREGUNTAS de clasificación
 
-(Solo después de que el usuario responda la pregunta 2)
-
-```
-📋 PREGUNTA 3/5: ¿Qué operaciones necesitas?
-
-[A] SOLO CREAR o LEER
-    → Una operación simple
-
-[B] CRUD COMPLETO
-    → Crear, Leer, Actualizar, Borrar
-
-[C] CRUD + PROCESOS ASÍNCRONOS + INTEGRACIONES
-    → Transacciones complejas, colas, APIs externas
-```
-
-**Espera la respuesta del usuario antes de continuar.**
+Hacerlas UNA A LA VEZ.
 
 ---
 
-### Paso 4: CUARTA PREGUNTA
+### Paso 7: RESULTADO + ACCIÓN
 
-(Solo después de que el usuario responda la pregunta 3)
-
-```
-📋 PREGUNTA 4/5: ¿Tienes integraciones externas?
-
-[A] NINGUNA o MÁXIMO 1
-    → Solo operaciones internas de NetSuite
-
-[B] 2-3 INTEGRACIONES
-    → Gateway, VTEX, APIs de pagos, etc.
-
-[C] MÁS DE 3
-    → Múltiples sistemas externos
-```
-
-**Espera la respuesta del usuario antes de continuar.**
-
----
-
-### Paso 5: QUINTA PREGUNTA
-
-(Solo después de que el usuario responda la pregunta 4)
-
-```
-📋 PREGUNTA 5/5: ¿Cuántas líneas de código estimás?
-
-[A] POCAS (hasta 1500 líneas)
-    → Proyecto pequeño, código simple
-
-[B] MEDIAS (1501-4000 líneas)
-    → Proyecto mediano, funcionalidad moderada
-
-[C] MUCHAS (más de 4000 líneas)
-    → Proyecto grande, sistema completo
-```
-
-**Espera la respuesta del usuario antes de continuar.**
-
----
-
-### Análisis Final
-
-Después de las 5 preguntas, cuenta las respuestas:
-
-| Clasificación | Criterios |
-|---------------|-----------|
-| **PEQUEÑO** | Mayoría de respuestas A |
-| **MEDIANO** | Mayoría de respuestas B |
-| **GRANDE** | Mayoría de respuestas C |
-
-**Muestra el resultado al usuario:**
+Después de las 5 preguntas:
 
 ```
 🎯 RESULTADO: Tu proyecto es [PEQUEÑO/MEDIANO/GRANDE]
 
-→ Estructura recomendada: [descripción breve]
+Datos del proyecto:
+- Ruta: [ruta]
+- Nombre: [nombre]
+- Prefijo: [prefijo]
+- Dominio: [dominio]
+
+Ahora voy a:
+1. Clonar el repositorio template
+2. Configurar package.json, tsconfig.json
+3. Crear la estructura TypeScripts según tu clasificación
+4. Crear scripts NetSuite con prefijo [prefijo]_
 ```
 
 ---
 
-### Pregunta Adicional (solo para MEDIANO)
-
-Si el resultado es MEDIANO, pregunta:
-
-```
-📋 Tu proyecto es MEDIANO.
-¿Querés usar carpeta Modules?
-
-[A] SÍ - Mi proyecto tendrá 3+ dominios
-[B] NO - Solo tendré 1-2 dominios
-```
+## Estructuras Detalladas por Tipo de Proyecto
 
 ---
 
-## Estructuras por Tipo de Proyecto
+## 🏠 PROYECTO PEQUEÑO
 
-### PROYECTO PEQUEÑO
+**Cuándo usarlo:** 1 dominio, ≤5 scripts, ≤1500 líneas, operaciones simples
 
-Estructura directa, sin carpeta Modules:
+### Estructura de carpetas:
 
 ```
-src/TypeScripts/[NombreProyecto]/
-├── [Dominio]/
-│   ├── [dominio].service.ts
-│   ├── [dominio].repository.ts
-│   └── [dominio].types.ts
+src/TypeScripts/[nombre-proyecto]/
+├── [Dominio]/                              ← Dominio directo (ej: Sales)
+│   ├── [dominio].service.ts               ← Lógica de negocio principal
+│   ├── [dominio].repository.ts            ← Acceso a datos (NetSuite)
+│   └── [dominio].types.ts                 ← Definición de tipos
 ├── Interface/
-│   └── gw_[tipo]_[nombre].ts
+│   ├── gw_[tipo]_[nombre].ts              ← Script NetSuite
+│   └── Suitelets/
+│       └── [prefijo]_sl_[nombre].ts       ← Ej: gw_sl_facturas.ts
+│   └── Restlets/
+│       └── [prefijo]_rs_[nombre].ts       ← Ej: gw_rs_pedidos.ts
 └── Shared/
     └── utils/
+        └── logger.ts
+```
+
+### Ejemplo (proyecto "facturas", prefijo "gw", dominio "Sales"):
+
+```
+src/TypeScripts/facturas/
+├── Sales/
+│   ├── sales.service.ts
+│   ├── sales.repository.ts
+│   └── sales.types.ts
+├── Interface/
+│   ├── gw_sl_facturas.ts
+│   └── Restlets/
+│       └── gw_rs_facturas.ts
+└── Shared/
+    └── utils/
+        └── logger.ts
+```
+
+**Scripts NetSuite creados:**
+- `gw_sl_facturas.ts` → Suitelet
+- `gw_rs_facturas.ts` → Restlet
+
+---
+
+## 🏢 PROYECTO MEDIANO (SIN carpeta Modules)
+
+**Cuándo usarlo:** 1-2 dominios, 6-15 scripts, CRUD completo
+
+### Estructura:
+
+```
+src/TypeScripts/[nombre-proyecto]/
+├── [Dominio]/
+│   ├── Domain/
+│   │   └── entities/
+│   │       └── [dominio].entity.ts
+│   ├── Application/
+│   │   ├── services/
+│   │   │   └── [dominio].service.ts
+│   │   └── transforms/
+│   │       └── [dominio].transform.ts
+│   ├── Infrastructure/
+│   │   └── repositories/
+│   │       └── [dominio].repository.ts
+│   └── validations/
+│       └── [dominio].validation.ts
+├── Interface/
+│   ├── Restlets/
+│   │   └── [prefijo]_rs_[nombre].ts
+│   ├── Suitelets/
+│   │   └── [prefijo]_sl_[nombre].ts
+│   └── UserEvents/
+│       └── [prefijo]_ue_[nombre].ts
+└── Shared/
+    ├── utils/
+    │   └── logger.ts
+    └── constants/
+        └── [dominio].constants.ts
+```
+
+### Ejemplo (proyecto "tienda-online", prefijo "gw", dominio "Sales"):
+
+```
+src/TypeScripts/tienda-online/
+├── Sales/
+│   ├── Domain/
+│   │   └── entities/
+│   │       └── sales.entity.ts
+│   ├── Application/
+│   │   ├── services/
+│   │   │   └── sales.service.ts
+│   │   └── transforms/
+│   │       └── sales.transform.ts
+│   ├── Infrastructure/
+│   │   └── repositories/
+│   │       └── sales.repository.ts
+│   └── validations/
+│       └── sales.validation.ts
+├── Interface/
+│   ├── Restlets/
+│   │   └── gw_rs_pedidos.ts
+│   ├── Suitelets/
+│   │   └── gw_sl_carrito.ts
+│   └── UserEvents/
+│       └── gw_ue_factura.ts
+└── Shared/
+    ├── utils/
+    │   └── logger.ts
+    └── constants/
+        └── sales.constants.ts
 ```
 
 ---
 
-### PROYECTO MEDIANO
+## 🏢 PROYECTO MEDIANO (CON carpeta Modules)
+
+**Cuándo usarlo:** 2+ dominios que crescerán
+
+### Estructura:
 
 ```
-src/TypeScripts/[NombreProyecto]/
-├── [Dominio]/
-│   ├── Domain/entities/
-│   ├── Application/services/
-│   ├── Infrastructure/repositories/
-│   └── validations/
-├── Interface/
-└── Shared/
-```
-
-O con Modules si respondió [A] en la pregunta adicional:
-
-```
-src/TypeScripts/[NombreProyecto]/
+src/TypeScripts/[nombre-proyecto]/
 ├── Modules/
 │   └── [Dominio]/
 │       ├── Domain/
@@ -214,64 +218,124 @@ src/TypeScripts/[NombreProyecto]/
 │       ├── Infrastructure/
 │       └── validations/
 ├── Interface/
+│   ├── Restlets/
+│   ├── Suitelets/
+│   └── UserEvents/
 └── Shared/
+    ├── utils/
+    └── constants/
 ```
 
 ---
 
-### PROYECTO GRANDE
+## 🏰 PROYECTO GRANDE (Arquitectura Hexagonal completa)
+
+**Cuándo usarlo:** 3+ dominios, >15 scripts, múltiples integraciones
+
+### Estructura:
 
 ```
-src/TypeScripts/[NombreProyecto]/
+src/TypeScripts/[nombre-proyecto]/
 ├── Modules/
 │   └── [Dominio]/
+│       ├── Domain/
+│       │   ├── entities/
+│       │   ├── value-objects/
+│       │   ├── events/
+│       │   └── services/
+│       ├── Application/
+│       │   ├── use-cases/
+│       │   ├── ports/
+│       │   │   ├── inbound/
+│       │   │   └── outbound/
+│       │   ├── dtos/
+│       │   ├── services/
+│       │   └── transforms/
+│       ├── Infrastructure/
+│       │   ├── persistence/
+│       │   └── adapters/
+│       └── validations/
+├── Interface/
+│   ├── Restlets/      → [prefijo]_rs_[nombre].ts
+│   ├── Suitelets/     → [prefijo]_sl_[nombre].ts
+│   ├── UserEvents/    → [prefijo]_ue_[nombre].ts
+│   ├── Scheduled/     → [prefijo]_ss_[nombre].ts
+│   └── MapReduce/     → [prefijo]_mr_[nombre].ts
+└── Shared/
+    ├── domain/
+    │   ├── result.ts
+    │   └── guard.ts
+    ├── utils/
+    └── constants/
+```
+
+### Ejemplo (proyecto "marketplace", prefijo "gw", dominio "Sales"):
+
+```
+src/TypeScripts/marketplace/
+├── Modules/
+│   └── Sales/
 │       ├── Domain/ (entities, value-objects, events, services)
-│       ├── Application/ (use-cases, ports/inbound, ports/outbound, dtos)
+│       ├── Application/ (use-cases, ports, dtos, services, transforms)
 │       ├── Infrastructure/ (persistence, adapters)
 │       └── validations/
 ├── Interface/
+│   ├── Restlets/
+│   │   └── gw_rs_orders.ts
+│   ├── Suitelets/
+│   │   └── gw_sl_checkout.ts
+│   ├── UserEvents/
+│   │   └── gw_ue_invoice.ts
+│   ├── Scheduled/
+│   │   └── gw_ss_sync.ts
+│   └── MapReduce/
+│       └── gw_mr_import.ts
 └── Shared/
+    ├── domain/
+    ├── utils/
+    └── constants/
 ```
 
 ---
 
-## Cuándo Explicar Arquitectura
+## Nomenclatura de Scripts NetSuite
 
-Si el usuario pregunta:
-- "qué es clean architecture?"
-- "por qué usar esa arquitectura?"
-- "qué es arquitectura hexagonal?"
+**Formato:** `[prefijo]_[tipo]_[nombre].ts`
 
-**Entonces explica** (sin hacer preguntas de clasificación):
+| Tipo | Código | Ejemplo completo |
+|------|--------|------------------|
+| Suitelet | sl | gw_sl_facturas |
+| Restlet | rs | gw_rs_pedidos |
+| User Event | ue | gw_ue_factura |
+| Scheduled | ss | gw_ss_sincronizacion |
+| Map/Reduce | mr | gw_mr_importacion |
+| Client Script | cs | gw_cs_validacion |
+| Portlet | pt | gw_pt_dashboard |
 
-```
-🏗️ Clean Architecture (Uncle Bob)
+---
 
-Capas:
-├── Domain (Entidades, reglas de negocio)
-├── Application (Casos de uso, servicios)
-├── Infrastructure (Repositorios, adaptadores)
-└── Interface (Scripts NetSuite)
+## Configuraciones Automáticas
 
-Beneficio: El código de negocio no depende de NetSuite.
-Podés probar la lógica sin necesidad de NetSuite.
+### package.json:
 
-Hexagonal Architecture (Alistair Cockburn):
+| Campo | Valor |
+|-------|-------|
+| name | [nombre-proyecto] |
+| displayName | NetSuite [Dominio] Project |
+| description | NetSuite TypeScript project for [Dominio] - [Tipo] |
 
-Puertos y Adaptadores:
-├── Ports (interfaces hacia afuera/adentro)
-└── Adapters (implementaciones: NetSuite, VTEX, Gateway)
+### tsconfig.json:
 
-Beneficio: Podés cambiar VTEX por otro proveedor
-sin tocar tu lógica de negocio.
-```
+| Campo | Valor |
+|-------|-------|
+| rootDir | src/TypeScripts/[nombre] |
+| outDir | src/FileCabinet/SuiteScripts/[nombre] |
+| include | src/TypeScripts/[nombre]/**/* |
 
 ---
 
 ## Referencias
 
+- Template: https://github.com/gildder/netsuite-ts-sdf-template
 - Clean Architecture: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
-- Hexagonal Architecture: https://alistair.cockburn.us/hexagonal-architecture
-- Wikipedia: https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)
-
-Ver `ARCHITECTURE.md` para más detalles.
+- Hexagonal: https://alistair.cockburn.us/hexagonal-architecture
