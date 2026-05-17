@@ -18,7 +18,7 @@ description: |-
 ---
 compatibility: opencode,claude-code,cursor,codex
 metadata:
-  version: "1.5"
+  version: "1.6"
   author: Gateway Team
   license: MIT
 ---
@@ -36,12 +36,12 @@ metadata:
 
 ## FASE 1: Preguntas Iniciales del Proyecto
 
-### PREGUNTA 1/9: Ubicación del Proyecto
+### PREGUNTA 1/8: Ubicación del Proyecto
 
 **Solo muestre esta pregunta. No muestre las demás.**
 
 ```
-📍 PREGUNTA 1/9: ¿Dónde querés crear el proyecto?
+📍 PREGUNTA 1/8: ¿Dónde querés crear el proyecto?
 
 Por favor, proporciona la ruta completa donde se creará la carpeta del proyecto.
 
@@ -55,12 +55,12 @@ Ejemplos de respuesta:
 
 ---
 
-### PREGUNTA 2/9: Nombre del Proyecto
+### PREGUNTA 2/8: Nombre del Proyecto
 
 **Solo después de que el usuario responda la pregunta 1.**
 
 ```
-📍 PREGUNTA 2/9: ¿Cuál es el nombre del proyecto?
+📍 PREGUNTA 2/8: ¿Cuál es el nombre del proyecto?
 
 Este nombre se usará para:
 - Nombre de la carpeta del proyecto
@@ -78,12 +78,12 @@ Ejemplos de respuesta:
 
 ---
 
-### PREGUNTA 3/9: Prefijo del Proyecto
+### PREGUNTA 3/8: Prefijo del Proyecto
 
 **Solo después de que el usuario responda la pregunta 2.**
 
 ```
-📍 PREGUNTA 3/9: ¿Cuál es el prefijo del proyecto?
+📍 PREGUNTA 3/8: ¿Cuál es el prefijo del proyecto?
 
 El prefijo se usará para identificar tus scripts en NetSuite.
 Aparecerá al inicio de todos los archivos de scripts.
@@ -106,35 +106,14 @@ Ejemplos de respuesta:
 
 ---
 
-### PREGUNTA 4/9: Dominio Principal
+## FASE 2: Preguntas de Clasificación
+
+### PREGUNTA 4/8: Cantidad de Scripts
 
 **Solo después de que el usuario responda la pregunta 3.**
 
 ```
-📍 PREGUNTA 4/9: ¿Cuál es el dominio principal?
-
-El dominio representa el área funcional principal del proyecto.
-
-Ejemplos de respuesta:
-- "Sales" → Pedidos, facturas, clientes
-- "Inventory" → Artículos, stock, almacenes
-- "Customer" → Clientes, contactos
-- "Accounting" → asientos, impuestos
-- "Purchasing" → órdenes de compra, proveedores
-```
-
-**ESPERE la respuesta del usuario. Luego continúe a la PREGUNTA 5.**
-
----
-
-## FASE 2: Preguntas de Clasificación
-
-### PREGUNTA 5/9: Cantidad de Scripts
-
-**Solo después de que el usuario responda la pregunta 4.**
-
-```
-📋 PREGUNTA 5/9: ¿Cuántos scripts NetSuite tendrá tu proyecto?
+📋 PREGUNTA 4/8: ¿Cuántos scripts NetSuite tendrá tu proyecto?
 
 [A] POCOS (1-5 scripts)
     → Ejemplo: un Restlet simple o Suitelet básico
@@ -146,16 +125,16 @@ Ejemplos de respuesta:
     → Ejemplo: múltiples integraciones, colas, procesos
 ```
 
-**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 6.**
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 5.**
 
 ---
 
-### PREGUNTA 6/9: Dominios
+### PREGUNTA 5/8: Dominios
 
-**Solo después de que el usuario responda la pregunta 5.**
+**Solo después de que el usuario responda la pregunta 4.**
 
 ```
-📋 PREGUNTA 6/9: ¿Cuántos dominios necesitas?
+📋 PREGUNTA 5/8: ¿Cuántos dominios necesitas?
 
 (Dominios = módulos de negocio diferentes)
 
@@ -169,16 +148,16 @@ Ejemplos de respuesta:
     → Ejemplo: Sales + Inventory + Customer + Accounting
 ```
 
-**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 7.**
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 6.**
 
 ---
 
-### PREGUNTA 7/9: Operaciones
+### PREGUNTA 6/8: Operaciones
 
-**Solo después de que el usuario responda la pregunta 6.**
+**Solo después de que el usuario responda la pregunta 5.**
 
 ```
-📋 PREGUNTA 7/9: ¿Qué operaciones necesitas?
+📋 PREGUNTA 6/8: ¿Qué operaciones necesitas?
 
 [A] SOLO CREAR o LEER
     → Una operación simple (solo lectura o crear un registro)
@@ -190,16 +169,16 @@ Ejemplos de respuesta:
     → Transacciones complejas, colas, APIs externas, procesos batch
 ```
 
-**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 8.**
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe a la PREGUNTA 7.**
 
 ---
 
-### PREGUNTA 8/9: Integraciones
+### PREGUNTA 7/8: Integraciones
 
-**Solo después de que el usuario responda la pregunta 7.**
+**Solo después de que el usuario responda la pregunta 6.**
 
 ```
-📋 PREGUNTA 8/9: ¿Tienes integraciones externas?
+📋 PREGUNTA 7/8: ¿Tienes integraciones externas?
 
 [A] NINGUNA o MÁXIMO 1
     → Solo operaciones internas de NetSuite
@@ -209,6 +188,27 @@ Ejemplos de respuesta:
 
 [C] MÁS DE 3
     → Múltiples sistemas externos (ERP, CRM, logística, etc.)
+```
+
+**ESPERE la respuesta del usuario (A, B o C). Luego continúe al RESULTADO.**
+
+---
+
+### PREGUNTA 8/8: Líneas de Código
+
+**Solo después de que el usuario responda la pregunta 7.**
+
+```
+📋 PREGUNTA 8/8: ¿Cuántas líneas de código estimás?
+
+[A] POCAS (hasta 1500 líneas)
+    → Proyecto pequeño, código simple
+
+[B] MEDIAS (1501-4000 líneas)
+    → Proyecto mediano, funcionalidad moderada
+
+[C] MUCHAS (más de 4000 líneas)
+    → Proyecto grande, sistema completo
 ```
 
 **ESPERE la respuesta del usuario (A, B o C). Luego continúe al RESULTADO.**
@@ -229,7 +229,7 @@ Basado en tus respuestas:
 - Dominios: [A/B/C]
 - Operaciones: [A/B/C]
 - Integraciones: [A/B/C]
-- Líneas de código (estimado): [A/B/C]
+- Líneas de código: [A/B/C]
 
 Tu proyecto es: [PEQUEÑO/MEDIANO/GRANDE]
 
@@ -239,7 +239,6 @@ Datos del proyecto:
 - Ubicación: [ruta proporcionada en pregunta 1]
 - Nombre: [nombre proporcionado en pregunta 2]
 - Prefijo: [prefijo proporcionado en pregunta 3]
-- Dominio: [dominio proporcionado en pregunta 4]
 
 ---
 
@@ -257,7 +256,7 @@ Ahora voy a:
 **Solo si el resultado fue MEDIANO.**
 
 ```
-📋 PREGUNTA 9/9: Tu proyecto es MEDIANO.
+📋 PREGUNTA EXTRA: Tu proyecto es MEDIANO.
 
 ¿Querés usar carpeta Modules?
 
@@ -288,11 +287,11 @@ src/TypeScripts/[nombre]/
 
 ---
 
-### 🏢 PROYECTO MEDIANO
+### 🏢 PROYECTO MEDIANO (sin Modules)
 
 ```
 src/TypeScripts/[nombre]/
-├── [Dominio]/  (SIN Modules)
+├── [Dominio]/
 │   ├── Domain/entities/
 │   ├── Application/services/, transforms/
 │   ├── Infrastructure/repositories/
@@ -304,15 +303,22 @@ src/TypeScripts/[nombre]/
 └── Shared/
 ```
 
-O con Modules si respondió [A] en pregunta adicional:
+---
+
+### 🏢 PROYECTO MEDIANO (con Modules)
 
 ```
 src/TypeScripts/[nombre]/
 ├── Modules/
 │   └── [Dominio]/
-│       ├── Domain/, Application/, Infrastructure/
+│       ├── Domain/entities/
+│       ├── Application/services/, transforms/
+│       ├── Infrastructure/repositories/
 │       └── validations/
 ├── Interface/
+│   ├── [prefijo]_rs_[nombre].ts
+│   ├── [prefijo]_sl_[nombre].ts
+│   └── [prefijo]_ue_[nombre].ts
 └── Shared/
 ```
 
