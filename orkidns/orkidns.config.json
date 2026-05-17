@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "description": "OrkidNS Configuration - NetSuite Architecture Validator",
+  "project": {
+    "name": "",
+    "prefix": "",
+    "type": "mediano-con-modules",
+    "domains": []
+  },
+  "architecture": {
+    "pattern": "hexagonal",
+    "modulesFolder": true
+  },
+  "rules": {
+    "noDirectAccessToRecord": true,
+    "useRepositories": true,
+    "usePortsForExternal": true
+  },
+  "patterns": {
+    "with external": "useAdapters",
+    "with netSuite": "useRepositories",
+    "async": "useUseCases"
+  }
+}

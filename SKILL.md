@@ -353,3 +353,59 @@ src/TypeScripts/[nombre]/
 - Template: https://github.com/gildder/netsuite-ts-sdf-template
 - Clean Architecture: https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 - Hexagonal: https://alistair.cockburn.us/hexagonal-architecture
+
+---
+
+## OrkidNS - Agente de Arquitectura
+
+Para crear y validar componentes siguiendo la arquitectura, usá el agente **OrkidNS**.
+
+### Comandos disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `orkidns add "idea"` | Crear componentes desde una idea |
+| `orkidns check` | Validar arquitectura del proyecto |
+| `orkidns info [carpeta]` | Explicar qué va y qué NO va en esa carpeta |
+| `orkidns list` | Listar componentes del proyecto |
+| `orkidns init` | Inicializar OrkidNS en un proyecto |
+| `orkidns fix` | Corregir problemas de arquitectura |
+| `orkidns hint` | Dar sugerencias basadas en código existente |
+
+### Ejemplo de uso
+
+```
+USER: orkidns add "quiero hacer un servicio para crear facturas"
+
+ORKIDNS:
+📋 Basándome en tu idea "crear facturas":
+
+Componentes sugeridos:
+✅ Entity: Domain/entities/invoice.entity.ts
+✅ Service: Application/services/invoice.service.ts
+✅ Repository: Infrastructure/persistence/invoice.repository.ts
+
+¿Querés que los cree? (sí/no)
+```
+
+### Palabras clave para inferencia
+
+| Keyword | → | Componentes |
+|---------|---|-------------|
+| "crear" / "nuevo" | | Entity + Service + Repository |
+| "integrar" | | Adapter + Port |
+| "sincronizar" | | UseCase + Scheduled |
+| "validar" | | Validation |
+| "transformar" | | Transform |
+| "evento" | | DomainEvent |
+| "CRUD" | | Entity + Service + Repository + Validation + Transform |
+| "api" | | Port + Adapter |
+| "programado" | | Scheduled |
+
+### Para usar OrkidNS
+
+1. Configurá el agente en `opencode.json`
+2. Inicializá con `orkidns init` en tu proyecto
+3. Usá los comandos para crear y validar
+
+Ver `orkidns/AGENT.md` para documentación completa del agente.

@@ -1,0 +1,131 @@
+{
+  "version": "1.0",
+  "description": "OrkidNS Inference Rules - Keywords mapping to components",
+  "keywords": {
+    "create": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Full create operation with data access"
+    },
+    "new": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Full create operation"
+    },
+    "read": {
+      "components": ["Repository", "Service"],
+      "description": "Read/fetch data from NetSuite"
+    },
+    "consult": {
+      "components": ["Repository", "Service"],
+      "description": "Query data from NetSuite"
+    },
+    "get": {
+      "components": ["Repository", "Service"],
+      "description": "Get data by ID or search"
+    },
+    "update": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Update existing record"
+    },
+    "modify": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Modify existing data"
+    },
+    "delete": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Delete a record"
+    },
+    "remove": {
+      "components": ["Entity", "Service", "Repository"],
+      "description": "Remove a record"
+    },
+    "integrate": {
+      "components": ["Adapter", "Port"],
+      "description": "Connect with external system"
+    },
+    "sync": {
+      "components": ["UseCase", "Scheduled", "Adapter"],
+      "description": "Synchronize data between systems"
+    },
+    "import": {
+      "components": ["UseCase", "Adapter", "Transform"],
+      "description": "Import data from external source"
+    },
+    "export": {
+      "components": ["UseCase", "Adapter", "Transform"],
+      "description": "Export data to external system"
+    },
+    "validate": {
+      "components": ["Validation"],
+      "description": "Validate data or business rules"
+    },
+    "verify": {
+      "components": ["Validation"],
+      "description": "Verify data integrity"
+    },
+    "transform": {
+      "components": ["Transform"],
+      "description": "Convert data between formats"
+    },
+    "convert": {
+      "components": ["Transform"],
+      "description": "Convert data formats"
+    },
+    "event": {
+      "components": ["DomainEvent", "EventHandler"],
+      "description": "Handle domain events"
+    },
+    "when": {
+      "components": ["DomainEvent", "EventHandler"],
+      "description": "Trigger on specific actions"
+    },
+    "api": {
+      "components": ["Port", "Adapter"],
+      "description": "REST/JSON API endpoints"
+    },
+    "restlet": {
+      "components": ["Port", "Adapter"],
+      "description": "NetSuite RESTlet"
+    },
+    "suitelet": {
+      "components": ["Port"],
+      "description": "NetSuite Suitelet UI"
+    },
+    "crud": {
+      "components": ["Entity", "Service", "Repository", "Validation", "Transform"],
+      "description": "Complete CRUD operations"
+    },
+    "complete": {
+      "components": ["Entity", "Service", "Repository", "Validation", "Transform"],
+      "description": "Full functionality"
+    },
+    "process": {
+      "components": ["UseCase", "Service"],
+      "description": "Business process"
+    },
+    "batch": {
+      "components": ["UseCase", "Scheduled", "MapReduce"],
+      "description": "Batch processing"
+    },
+    "scheduler": {
+      "components": ["Scheduled"],
+      "description": "Scheduled script"
+    },
+    "cron": {
+      "components": ["Scheduled"],
+      "description": "Scheduled task"
+    }
+  },
+  "entityMapping": {
+    "invoice": "SalesOrder",
+    "factura": "SalesOrder",
+    "pedido": "SalesOrder",
+    "order": "SalesOrder",
+    "product": "Item",
+    "articulo": "Item",
+    "item": "Item",
+    "cliente": "Customer",
+    "customer": "Customer",
+    "vendor": "Vendor",
+    "proveedor": "Vendor"
+  }
+}

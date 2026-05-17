@@ -54,10 +54,50 @@ Formato: `[prefijo]_[tipo]_[nombre].ts`
 | Scheduled | ss | gw_ss_sync.ts |
 | Map/Reduce | mr | gw_mr_import.ts |
 
+## OrkidNS - Agente de Arquitectura
+
+Este skill incluye **OrkidNS**, un agente para validar y generar código siguiendo la arquitectura.
+
+### Comandos
+
+| Comando | Descripción |
+|---------|-------------|
+| `orkidns add "idea"` | Crear componentes desde una idea |
+| `orkidns check` | Validar arquitectura |
+| `orkidns info` | Explicar estructura de carpetas |
+| `orkidns list` | Listar componentes |
+| `orkidns init` | Inicializar en proyecto |
+| `orkidns fix` | Corregir problemas |
+| `orkidns hint` | Sugerencias |
+
+### Configuración
+
+Agregar en `opencode.json`:
+
+```json
+{
+  "skills": {
+    "netsuite-clean-architecture": {
+      "path": "C:\\...\\netsuite-architecture-skill"
+    }
+  },
+  "agent": {
+    "orkidns": {
+      "description": "Valida y genera código siguiendo la arquitectura NetSuite",
+      "mode": "subagent",
+      "tools": { "bash": true, "read": true, "write": true, "grep": true }
+    }
+  }
+}
+```
+
+Ver `orkidns/AGENT.md` para documentación completa.
+
 ## Documentación
 
 - [SKILL.md](SKILL.md) - Guía completa del skill
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Explicación de arquitecturas
+- [orkidns/AGENT.md](orkidns/AGENT.md) - Documentación del agente
 
 ## Template
 
