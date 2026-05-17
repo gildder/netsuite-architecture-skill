@@ -243,7 +243,7 @@ Datos del proyecto:
 ---
 
 Ahora voy a:
-1. Clonar el repositorio template en [ruta]
+1. Clonar el repositorio template directamente en [ruta] (archivos en la raíz, sin subcarpeta)
 2. Configurar package.json, tsconfig.json
 3. Crear la estructura TypeScripts según tu clasificación
 4. Crear scripts NetSuite con prefijo [prefijo]_

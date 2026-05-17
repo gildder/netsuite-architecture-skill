@@ -26,14 +26,16 @@ echo "Ruta: $RUTA"
 echo "=========================================="
 echo ""
 
-# 1. Clonar el repositorio template
+# 1. Clonar el repositorio template (directamente en la carpeta raíz)
 echo "📦 1. Clonando repositorio template..."
 if [ -d "$RUTA" ]; then
     echo "   La carpeta ya existe. Limpiando..."
     rm -rf "$RUTA"
 fi
-git clone "$TEMPLATE_REPO" "$RUTA"
-echo "   ✓ Template clonado"
+mkdir -p "$RUTA"
+cd "$RUTA"
+git clone "$TEMPLATE_REPO" .
+echo "   ✓ Template clonado directamente en $RUTA"
 echo ""
 
 # 2. Actualizar package.json
