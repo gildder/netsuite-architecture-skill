@@ -21,7 +21,7 @@ USER: "gw"
 
 (Sigue con las preguntas de clasificación...)
 
-RESULTADO: Tu proyecto es PEQUEÑO
+RESULTADO: Tu proyecto es SMALL
 ```
 
 ### Crear proyecto directamente (sin preguntas)
@@ -33,7 +33,7 @@ SKILL: ✅ Creando proyecto:
 - Ubicación: D:\proyectos\ventas
 - Nombre: ventas
 - Prefijo: acme
-- Tipo: PEQUEÑO (basado en parámetros)
+- Tipo: SMALL (basado en parámetros)
 ```
 
 ---
@@ -55,7 +55,7 @@ Contenido:
   "project": {
     "name": "mi-proyecto",
     "prefix": "gw",
-    "type": "mediano-con-modules",
+    "type": "medium-with-modules",
     "domains": []
   }
 }
@@ -186,13 +186,13 @@ USER: orkidns info
 ORKIDNS:
 📁 Guía de estructura de carpetas
 
-🏠 PEQUEÑO (directo):
+🏠 SMALL (directo):
    [Dominio]/
      - *.service.ts
      - *.repository.ts
      - *.types.ts
 
-🏢 MEDIANO/GRANDE (capas):
+🏢 MEDIUM/LARGE (capas):
    Domain/entities/         → *.entity.ts
    Application/services/   → *.service.ts
    Application/transforms/ → *.transform.ts

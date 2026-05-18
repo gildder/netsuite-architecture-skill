@@ -11,10 +11,63 @@ Guía para crear proyectos NetSuite con TypeScript usando arquitectura limpia.
 - ✅ Crea scripts NetSuite con prefijo personalizado
 - ✅ Soporta Clean Architecture y Hexagonal Architecture
 
+## Estructura de Archivos
+
+Este skill está configurado para funcionar con **OpenCode** y ser compatible con otros modelos de IA:
+
+```
+netsuite-architecture-skill/
+├── .opencode/
+│   ├── skills/
+│   │   └── netsuite-clean-architecture/
+│   │       └── SKILL.md          ← Ubicación OpenCode
+│   └── agents/
+│       └── orkidns/
+│           └── AGENT.md          ← Ubicación OpenCode
+├── orkidns/
+│   ├── AGENT.md                  ← Original (referencia)
+│   └── templates/
+├── SKILL.md                      ← Original (referencia)
+└── EXAMPLES.md                   ← Ejemplos de uso
+```
+
 ## Instalación
 
+### Opción 1: Copiar directamente al proyecto
+
+Copia la carpeta `.opencode/` de este repositorio a tu proyecto:
+
 ```bash
-npx skills add gildder/netsuite-architecture-skill
+# En tu proyecto NetSuite
+cp -r path/to/netsuite-architecture-skill/.opencode/ .
+```
+
+### Opción 2: Enlazar con opencode.json
+
+En tu `opencode.json`:
+
+```json
+{
+  "skills": {
+    "netsuite-clean-architecture": {
+      "path": "C:\\path\\to\\netsuite-architecture-skill",
+      "description": "Guide for NetSuite TypeScript projects with Clean Architecture"
+    }
+  },
+  "agent": {
+    "orkidns": {
+      "description": "Validates and generates code following NetSuite architecture",
+      "mode": "subagent",
+      "tools": {
+        "bash": true,
+        "read": true,
+        "write": true,
+        "grep": true,
+        "glob": true
+      }
+    }
+  }
+}
 ```
 
 ## Flujo de Uso
