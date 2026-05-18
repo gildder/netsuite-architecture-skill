@@ -245,8 +245,10 @@ Datos del proyecto:
 Ahora voy a:
 1. Clonar el repositorio template directamente en [ruta] (archivos en la raíz, sin subcarpeta)
 2. Configurar package.json, tsconfig.json
-3. Crear la estructura TypeScripts según tu clasificación
-4. Crear scripts NetSuite con prefijo [prefijo]_
+3. Configurar deploy.xml (actualizar path de FileCabinet)
+4. Configurar manifest.xml (actualizar nombre del proyecto)
+5. Crear la estructura TypeScripts según tu clasificación
+6. Crear scripts NetSuite con prefijo [prefijo]_
 ```
 
 ---
@@ -371,6 +373,52 @@ Formato: `[prefijo]_[tipo]_[nombre].ts`
 | Workflow Action | wa | wa_aprobacion_pedido.ts |
 | Mass Update | mu | mu_actualizacion_masiva.ts |
 | Bundle Installation | bi | bi_instalacion_bundle.ts |
+
+---
+
+## Configuración SDF
+
+Al crear un proyecto, se configuran automáticamente los archivos de SDF:
+
+### deploy.xml
+
+```xml
+<deploy>
+    <configuration>
+        <path>~/AccountConfiguration/*</path>
+    </configuration>
+    <files>
+        <path>~/FileCabinet/SuiteScripts/[nombre-proyecto]/*</path>
+    </files>
+    <objects>
+        <path>~/Objects/*</path>
+    </objects>
+    <translationimports>
+        <path>~/Translations/*</path>
+    </translationimports>
+</deploy>
+```
+
+### manifest.xml
+
+```xml
+<manifest projecttype="ACCOUNTCUSTOMIZATION">
+  <projectname>[NOMBRE_UPPER_CASE]_Project</projectname>
+  <frameworkversion>1.0</frameworkversion>
+  <dependencies>
+    <features>
+      <feature required="true">SERVERSIDESCRIPTING</feature>
+    </features>
+  </dependencies>
+</manifest>
+```
+
+### Archivos que se actualizan:
+
+| Archivo | Campo actualizado |
+|---------|-----------------|
+| deploy.xml | `FileCabinet/SuiteScripts/[nombre-proyecto]` |
+| manifest.xml | `projectname` → `[NOMBRE_UPPER]_Project` |
 
 ---
 

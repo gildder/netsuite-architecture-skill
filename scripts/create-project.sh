@@ -55,7 +55,20 @@ sed -i "s|src/TypeScripts/idev-engineering-netsuite/\*\*|src/TypeScripts/$NOMBRE
 echo "   ✓ tsconfig.json actualizado"
 echo ""
 
-# 4. Crear estructura TypeScripts según tipo
+# 4. Actualizar deploy.xml
+echo "📄 4. Actualizando deploy.xml..."
+PROJECT_NAME_UPPER=$(echo "$NOMBRE" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
+sed -i "s|idev-engineering-netsuite|$NOMBRE|g" src/deploy.xml
+echo "   ✓ deploy.xml actualizado"
+echo ""
+
+# 5. Actualizar manifest.xml
+echo "📄 5. Actualizando manifest.xml..."
+sed -i "s|<projectname>.*</projectname>|<projectname>${PROJECT_NAME_UPPER}_Project</projectname>|g" src/manifest.xml
+echo "   ✓ manifest.xml actualizado"
+echo ""
+
+# 6. Crear estructura TypeScripts según tipo
 echo "🏗️  4. Creando estructura TypeScripts..."
 
 case "$TIPO" in
