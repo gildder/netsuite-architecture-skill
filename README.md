@@ -1,54 +1,84 @@
 # NetSuite Clean Architecture Skill
 
-Guía para crear proyectos NetSuite con TypeScript usando arquitectura limpia.
+A reusable skill for AI assistants to create and manage NetSuite TypeScript projects with Clean Architecture patterns.
 
-## Características
+## What Is This?
 
-- ✅ Clasificación automática de proyectos (pequeño/mediano/grande)
-- ✅ Clona repositorio template automáticamente
-- ✅ Configura package.json y tsconfig.json
-- ✅ Crea estructura TypeScripts según clasificación
-- ✅ Crea scripts NetSuite con prefijo personalizado
-- ✅ Soporta Clean Architecture y Hexagonal Architecture
+A **skill** is a reusable instruction bundle that AI assistants can discover and load on-demand when needed. This skill provides:
 
-## Compatibilidad
+- Project classification (small/medium/large)
+- Automatic template cloning and setup
+- Clean Architecture structure generation
+- Script type detection and creation
 
-Este skill es compatible con múltiples modelos y herramientas de IA:
+## What Does It Do?
 
-| Herramienta | Ubicación Skills | Ubicación Agentes |
-|-------------|------------------|-------------------|
-| **OpenCode** | `.opencode/skills/` | `.opencode/agents/` |
-| **Claude Code** | `.claude/skills/` | `.claude/agents/` |
-| **Cursor** | `.cursor/rules/` | `.cursor/agents/` |
-| **Windsurf** | `.windsurf/rules/` | (no soportado) |
+### For Projects
 
-## Estructura de Archivos
+1. **Classification**: Determines project size (small/medium/large) using 8 questions
+2. **Setup**: Clones a TypeScript template and configures:
+   - `package.json` with project name
+   - `tsconfig.json` paths
+   - `deploy.xml` and `manifest.xml`
+   - `biome.json` for formatting
+3. **Structure**: Creates TypeScripts folder hierarchy based on classification
+
+### For Code
+
+- **OrkidNS Agent**: Validates architecture and suggests improvements
+- **Normalize**: Fixes TypeScript files to NetSuite format (JSDoc injection)
+
+## How Does It Work?
 
 ```
-netsuite-architecture-skill/
-├── .opencode/                    ← OpenCode
-│   ├── skills/netsuite-clean-architecture/SKILL.md
-│   └── agents/orkidns/AGENT.md
-├── .claude/                      ← Claude Code
-│   ├── skills/netsuite-clean-architecture/SKILL.md
-│   └── agents/orkidns/AGENT.md
-├── .agents/                      ← Otros agentes
-│   └── skills/netsuite-clean-architecture/SKILL.md
-├── orkidns/AGENT.md              ← Referencia
-├── SKILL.md                      ← Original
-└── EXAMPLES.md                   ← Ejemplos
+User Request → Skill Load → Questions → Template Clone → Structure Generation
+                            ↓
+                     OrkidNS Agent ←── Validates and generates code
 ```
 
-## Instalación por Herramienta
+### Components
 
-### OpenCode
+| Component | Purpose |
+|-----------|---------|
+| **SKILL.md** | Main instructions for AI assistants |
+| **AGENT.md** | OrkidNS subagent definition |
+| **scripts/** | Build and normalization scripts |
+| **templates/** | Configuration templates |
+
+## Installation
+
+### Quick Setup
+
+Copy the `.claude/` folder from this repository to your project:
 
 ```bash
-# Copiar estructura .opencode/
-cp -r .opencode/ /tu-proyecto/
+# In your project directory
+cp -r /path/to/netsuite-architecture-skill/.claude/ .
 ```
 
-O en `opencode.json`:
+### Per Platform
+
+#### Claude Code
+
+```bash
+# Project-level (shared with team)
+mkdir -p .claude/skills/netsuite-clean-architecture
+mkdir -p .claude/agents/orkidns
+
+# Copy SKILL.md and AGENT.md
+```
+
+#### OpenCode
+
+```bash
+# Project-level
+mkdir -p .opencode/skills/netsuite-clean-architecture
+mkdir -p .opencode/agents/orkidns
+
+# Copy SKILL.md and AGENT.md
+```
+
+Or configure in `opencode.json`:
 ```json
 {
   "skills": {
@@ -59,156 +89,102 @@ O en `opencode.json`:
 }
 ```
 
-### Claude Code / Cursor / Windsurf
+#### Cursor / Windsurf
 
 ```bash
-# Copiar estructura .claude/ o .cursor/
-cp -r .claude/ /tu-proyecto/
+mkdir -p .cursor/rules/netsuite-clean-architecture
+# Copy SKILL.md as .cursor/rules/netsuite-clean-architecture.md
 ```
 
-### GitHub CLI (agents)
+## Usage
 
-```bash
-# Usar con gh auth
-gh extension install github/agents
+### Starting a New Project
+
+Tell the AI assistant:
+
+```
+"Create a new NetSuite project"
+"I need to start a TypeScript project for NetSuite"
 ```
 
-### Opción 1: Copiar directamente al proyecto
+The skill will ask 8 questions:
+1. Where to create the project
+2. Project name
+3. Script prefix (e.g., "gw" → gw_sl_facturas.ts)
+4. Primary domain (Sales, Inventory, etc.)
+5. Number of domains
+6. Module folder preference
+7. Clean or Hexagonal Architecture
+8. Script type expectations
 
-Copia la carpeta `.opencode/` de este repositorio a tu proyecto:
+### Using OrkidNS Agent
 
-```bash
-# En tu proyecto NetSuite
-cp -r path/to/netsuite-architecture-skill/.opencode/ .
+After project creation, invoke the agent:
+
+```
+@orkidns check      # Validate architecture
+@orkidns add "..."  # Create components from idea
+@orkidns normalize  # Fix TypeScript files
+@orkidns list       # List all components
 ```
 
-### Opción 2: Enlazar con opencode.json
+### Commands Reference
 
-En tu `opencode.json`:
-
-```json
-{
-  "skills": {
-    "netsuite-clean-architecture": {
-      "path": "C:\\path\\to\\netsuite-architecture-skill",
-      "description": "Guide for NetSuite TypeScript projects with Clean Architecture"
-    }
-  },
-  "agent": {
-    "orkidns": {
-      "description": "Validates and generates code following NetSuite architecture",
-      "mode": "subagent",
-      "tools": {
-        "bash": true,
-        "read": true,
-        "write": true,
-        "grep": true,
-        "glob": true
-      }
-    }
-  }
-}
-```
-
-## Flujo de Uso
-
-### 1. El skill pregunta los datos del proyecto:
-
-- **Ubicación**: Dónde crear el proyecto
-- **Nombre**: Nombre de carpeta (ej: "facturas")
-- **Prefijo**: Para scripts NetSuite (ej: "gw" → gw_sl_facturas.ts)
-- **Dominio**: Principal (ej: "Sales", "Inventory")
-
-### 2. Clasificación con 5 preguntas
-
-Una pregunta a la vez para determinar el tipo de proyecto.
-
-### 3. Creación automática
-
-El skill clona el template y configura todo automáticamente.
-
-## Estructuras de Proyecto
-
-| Tipo | Dominios | Scripts | Estructura |
-|------|----------|---------|------------|
-| PEQUEÑO | 1 | ≤5 | Directa (sin Modules) |
-| MEDIANO | 1-2 | 6-15 | Capas (con/sin Modules) |
-| GRANDE | 3+ | >15 | Hexagonal (Ports, Use Cases) |
-
-## Nomenclatura de Scripts NetSuite
-
-Formato: `[prefijo]_[tipo]_[nombre].ts`
-
-| Tipo | Código | Ejemplo |
-|------|--------|---------|
-| Client Script | cs | gw_cs_validacion.ts |
-| User Event | ue | gw_ue_factura.ts |
-| Suitelet | sl | gw_sl_facturas.ts |
-| RESTlet | rl | gw_rl_pedidos.ts |
-| Portlet | pl | gw_pl_dashboard.ts |
-| Scheduled | sc | gw_sc_sincronizacion.ts |
-| Map/Reduce | mr | gw_mr_importacion.ts |
-| SuiteGL | gl | gl_asiento_automatico.ts |
-| Workflow Action | wa | wa_aprobacion_pedido.ts |
-| Mass Update | mu | mu_actualizacion_masiva.ts |
-| Bundle Installation | bi | bi_instalacion_bundle.ts |
-
-## OrkidNS - Agente de Arquitectura
-
-Este skill incluye **OrkidNS**, un agente para validar y generar código siguiendo la arquitectura.
-
-### Comandos
-
-| Comando | Descripción |
+| Command | Description |
 |---------|-------------|
-| `orkidns add "idea"` | Crear componentes desde una idea |
-| `orkidns check` | Validar arquitectura |
-| `orkidns info` | Explicar estructura de carpetas |
-| `orkidns list` | Listar componentes |
-| `orkidns init` | Inicializar en proyecto |
-| `orkidns fix` | Corregir problemas |
-| `orkidns normalize` | Corregir TypeScript al formato NetSuite |
-| `orkidns hint` | Sugerencias |
+| `/netsuite-clean-architecture` | Load the skill manually |
+| `@orkidns check` | Validate project structure |
+| `@orkidns add "idea"` | Generate components |
+| `@orkidns normalize [path]` | Fix TypeScript format |
+| `@orkidns info` | Show architecture guide |
+| `@orkidns list` | List all components |
+| `@orkidns hint` | Suggest improvements |
 
-### Ejemplos de uso
+## Compatibility
 
-Ver [EXAMPLES.md](EXAMPLES.md) para ejemplos detallados de cada comando.
+| Platform | Skills Location | Agents Location |
+|----------|-----------------|-----------------|
+| Claude Code | `.claude/skills/` | `.claude/agents/` |
+| OpenCode | `.opencode/skills/` | `.opencode/agents/` |
+| Cursor | `.cursor/rules/` | Not supported |
+| Windsurf | `.windsurf/rules/` | Not supported |
 
-### Configuración
+## File Structure
 
-Agregar en `opencode.json`:
-
-```json
-{
-  "skills": {
-    "netsuite-clean-architecture": {
-      "path": "C:\\...\\netsuite-architecture-skill"
-    }
-  },
-  "agent": {
-    "orkidns": {
-      "description": "Valida y genera código siguiendo la arquitectura NetSuite",
-      "mode": "subagent",
-      "tools": { "bash": true, "read": true, "write": true, "grep": true }
-    }
-  }
-}
+```
+netsuite-architecture-skill/
+├── .claude/                    # Claude Code
+│   ├── skills/netsuite-clean-architecture/SKILL.md
+│   └── agents/orkidns/AGENT.md
+├── .opencode/                  # OpenCode
+│   ├── skills/netsuite-clean-architecture/SKILL.md
+│   └── agents/orkidns/AGENT.md
+├── .agents/                    # Other agents
+│   └── skills/netsuite-clean-architecture/SKILL.md
+├── orkidns/                    # Reference files
+│   ├── AGENT.md
+│   ├── orkidns.config.json
+│   └── templates/
+├── scripts/                    # Build scripts
+│   ├── create-project.sh
+│   ├── prepend-headers.js
+│   └── normalize-ts.ps1
+├── templates/                  # Config templates
+├── SKILL.md                    # Main skill (root)
+├── AGENT.md                    # Agent reference
+└── README.md                   # This file
 ```
 
-Ver `orkidns/AGENT.md` para documentación completa.
+## Requirements
 
-## Documentación
+- Node.js 18+
+- TypeScript 5.x
+- Git
 
-- [SKILL.md](SKILL.md) - Guía completa del skill
-- [ARCHITECTURE.md](ARCHITECTURE.md) - Explicación de arquitecturas
-- [orkidns/AGENT.md](orkidns/AGENT.md) - Documentación del agente
-- [EXAMPLES.md](EXAMPLES.md) - Ejemplos prácticos de uso
+## Examples
 
-## Template
+See [EXAMPLES.md](EXAMPLES.md) for detailed usage examples.
 
-Este skill usa el repositorio template:
-https://github.com/gildder/netsuite-ts-sdf-template
-
-## Licencia
+## License
 
 MIT
