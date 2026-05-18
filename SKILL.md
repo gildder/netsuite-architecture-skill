@@ -422,6 +422,89 @@ Al crear un proyecto, se configuran automáticamente los archivos de SDF:
 
 ---
 
+## Reglas de Compilación TypeScript → NetSuite
+
+### tsconfig.json Requerido
+
+```json
+{
+  "compilerOptions": {
+    "module": "amd",
+    "target": "ESNext",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "newLine": "LF",
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "lib": ["ESNext", "dom"],
+    "paths": {
+      "N": ["node_modules/@hitc/netsuite-types/N"],
+      "N/*": ["node_modules/@hitc/netsuite-types/N/*"]
+    },
+    "skipLibCheck": true,
+    "noEmitOnError": true,
+    "strict": true
+  },
+  "include": ["src/TypeScripts/**/*"],
+  "exclude": ["node_modules"]
+}
+```
+
+### Reglas del Código
+
+| Regla | Descripción |
+|-------|-------------|
+| **module: amd** | NetSuite usa AMD (define/require) |
+| **target: ESNext** | SuiteScript 2.1 soporta ES2023 |
+| **JSDoc obligatorio** | Incluir `@NApiVersion 2.1` en cada archivo |
+| **Entry Points** | Exportar: `pageInit`, `onRequest`, `beforeSubmit`, `postSubmit`, etc. |
+| **NModuleScope** | Usar: `Public`, `SameAccount`, o `Prerequisite` |
+
+### Estructura de Archivo TypeScript
+
+```typescript
+/**
+ * @NApiVersion 2.1
+ * @NModuleScope Public
+ * @NScriptType Suitelet
+ */
+
+import record from 'N/record';
+import { EntryPoints } from 'N/types';
+
+export let onRequest: EntryPoints.Suitelet.onRequest = (context) => {
+  const rec = record.create({ type: record.Type.INVOICE });
+  context.response.write('Hola');
+};
+```
+
+### Transpilación
+
+TypeScript convierte esto a:
+
+```javascript
+define(['N/record', 'N/types'], function(record, types) {
+  var onRequest = function(context) {
+    var rec = record.create({ type: record.Type.INVOICE });
+    context.response.write('Hola');
+  };
+  return { onRequest: onRequest };
+});
+```
+
+### Dependencias Requeridas
+
+```json
+{
+  "devDependencies": {
+    "@hitc/netsuite-types": "^2025.1.0",
+    "typescript": "^5.4.0"
+  }
+}
+```
+
+---
+
 ## Referencias
 
 - Template: https://github.com/gildder/netsuite-ts-sdf-template
