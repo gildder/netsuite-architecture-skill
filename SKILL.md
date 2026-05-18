@@ -424,40 +424,83 @@ Al crear un proyecto, se configuran automáticamente los archivos de SDF:
 
 ## Reglas de Compilación TypeScript → NetSuite
 
-### tsconfig.json Requerido
+### ⚠️ Problemas Comunes y Soluciones
+
+#### Problema 1: esModuleInterop contamina el output AMD
+
+**Síntoma:** Cada archivo .js compilado comienza con ~33 líneas de código helper:
+```javascript
+var __importStar = (this && this.__importStar) || ...
+var __createBinding = (this && this.__createBinding) || ...
+```
+
+**Causa:** Tener `"esModuleInterop": true` combinado con `import * as x from 'N/x'`
+
+**Solución:** Eliminar `"esModuleInterop": true` del tsconfig.json. En NetSuite siempre se usan namespace imports que son AMD-native.
+
+---
+
+#### Problema 2: JSDoc @NApiVersion desaparece en la compilación
+
+**Síntoma:** El header JSDoc requerido por NetSuite no aparece en el .js compilado.
+
+**Causa:** tsc en modo AMD no preserva comentarios JSDoc a nivel de archivo.
+
+**Solución:** Usar script post-build `scripts/prepend-headers.js` que inyecta el JSDoc después de compilar.
+
+---
+
+#### Problema 3: Biome no encuentra archivos en Windows
+
+**Síntoma:** Biome reporta "0 files linted"
+
+**Causa:** El patrón `["**/*.{ts,json}"]` no funciona en Biome 1.9.4 en Windows.
+
+**Solución:** Separar en dos patrones:
+```json
+"include": ["**/*.ts", "**/*.json"]
+```
+
+---
+
+### tsconfig.json Recomendado
 
 ```json
 {
   "compilerOptions": {
-    "module": "amd",
-    "target": "ESNext",
-    "moduleResolution": "node",
-    "sourceMap": false,
-    "newLine": "LF",
-    "experimentalDecorators": true,
-    "baseUrl": ".",
-    "lib": ["ESNext", "dom"],
-    "paths": {
-      "N": ["node_modules/@hitc/netsuite-types/N"],
-      "N/*": ["node_modules/@hitc/netsuite-types/N/*"]
-    },
+    "target": "ES2020",
+    "module": "AMD",
+    "moduleResolution": "Node",
+    "lib": ["ESNext"],
+    "strict": true,
     "skipLibCheck": true,
     "noEmitOnError": true,
-    "strict": true
-  },
-  "include": ["src/TypeScripts/**/*"],
-  "exclude": ["node_modules"]
+    "experimentalDecorators": true
+    // NO esModuleInterop — nunca en proyectos NetSuite AMD
+  }
 }
 ```
+
+### Build Script
+
+El proyecto debe usar:
+```json
+"build": "tsc && node scripts/prepend-headers.js"
+```
+
+El script `prepend-headers.js` recorrerá los archivos de Interface/ y injectará el JSDoc del .ts original al .js compilado.
+
+---
 
 ### Reglas del Código
 
 | Regla | Descripción |
 |-------|-------------|
 | **module: amd** | NetSuite usa AMD (define/require) |
-| **target: ESNext** | SuiteScript 2.1 soporta ES2023 |
+| **target: ES2020** | SuiteScript 2.1 soporta ES2023 |
+| **Sin esModuleInterop** | NUNCA usar en proyectos NetSuite AMD |
 | **JSDoc obligatorio** | Incluir `@NApiVersion 2.1` en cada archivo |
-| **Entry Points** | Exportar: `pageInit`, `onRequest`, `beforeSubmit`, `postSubmit`, etc. |
+| **Entry Points** | Exportar: `pageInit`, `onRequest`, `beforeSubmit`, etc. |
 | **NModuleScope** | Usar: `Public`, `SameAccount`, o `Prerequisite` |
 
 ### Estructura de Archivo TypeScript

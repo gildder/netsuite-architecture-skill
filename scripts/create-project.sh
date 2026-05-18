@@ -52,10 +52,32 @@ echo "⚙️  3. Actualizando tsconfig.json..."
 sed -i "s|src/TypeScripts/idev-engineering-netsuite|src/TypeScripts/$NOMBRE|g" tsconfig.json
 sed -i "s|src/FileCabinet/SuiteScripts/idev-engineering-netsuite|src/FileCabinet/SuiteScripts/$NOMBRE|g" tsconfig.json
 sed -i "s|src/TypeScripts/idev-engineering-netsuite/\*\*|src/TypeScripts/$NOMBRE/**|g" tsconfig.json
-echo "   ✓ tsconfig.json actualizado"
+# CORRECCIÓN 1: Eliminar esModuleInterop que contamina output AMD
+sed -i 's/"esModuleInterop": true,//g' tsconfig.json
+echo "   ✓ tsconfig.json actualizado (sin esModuleInterop)"
 echo ""
 
-# 4. Actualizar deploy.xml
+# 4. Corregir biome.json (patrón de include incorrecto)
+echo "🔧 4. Corrigiendo biome.json..."
+sed -i 's/\*\.{ts,json}/\*.ts", "\*.json/g' biome.json
+echo "   ✓ biome.json corregido (patrón de include)"
+echo ""
+
+# 5. Copiar script prepend-headers.js para inyección de JSDoc
+echo "📄 5. Copiando script prepend-headers.js..."
+SCRIPT_PATH="C:\Users\gguerrero\Documents\000 desarrollo\netsuite-architecture-skill\scripts\prepend-headers.js"
+mkdir -p "$RUTA/scripts"
+cp "$SCRIPT_PATH" "$RUTA/scripts/prepend-headers.js"
+echo "   ✓ Script prepend-headers.js copiado"
+echo ""
+
+# 6. Actualizar package.json para incluir build con JSDoc
+echo "📝 6. Actualizando package.json (build con JSDoc)..."
+sed -i 's/"build": "tsc"/"build": "tsc \&\& node scripts\/prepend-headers.js"/g' package.json
+echo "   ✓ package.json actualizado (build con prepend-headers)"
+echo ""
+
+# 5. Actualizar deploy.xml
 echo "📄 4. Actualizando deploy.xml..."
 PROJECT_NAME_UPPER=$(echo "$NOMBRE" | tr '[:lower:]' '[:upper:]' | tr '-' '_')
 sed -i "s|idev-engineering-netsuite|$NOMBRE|g" src/deploy.xml
