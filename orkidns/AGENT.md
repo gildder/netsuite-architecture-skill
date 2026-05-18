@@ -6,16 +6,18 @@ OrkidNS (Orkestador NetSuite) is a sub-agent that validates and generates code f
 
 ## Available Commands
 
-| Command | Description |
-|---------|-------------|
-| `orkidns add "idea"` | Create components from a user idea |
-| `orkidns check` | Validate project architecture |
-| `orkidns info [folder]` | Explain what goes in each folder |
-| `orkidns list` | List all project components |
-| `orkidns init` | Initialize OrkidNS in a project |
-| `orkidns fix` | Fix architecture problems |
-| `orkidns normalize` | Fix TypeScript to NetSuite format |
-| `orkidns hint` | Suggest improvements based on existing code |
+| Command | Description | Tipo |
+|---------|-------------|------|
+| `orkidns add "idea"` | Create components from a user idea | Interno |
+| `orkidns check` | Validate project architecture | Interno |
+| `orkidns info [folder]` | Explain what goes in each folder | Interno |
+| `orkidns list` | List all project components | Interno |
+| `orkidns init` | Initialize OrkidNS in a project | Interno |
+| `orkidns fix` | Fix architecture problems | Interno |
+| `orkidns normalize [file]` | Fix TypeScript to NetSuite format | Script externo |
+| `orkidns hint` | Suggest improvements based on existing code | Interno |
+
+**Nota:** Los comandos internos usan las herramientas del agente (read, write, grep, glob) para operar en el proyecto. El comando `normalize` puede usar un script externo cuando sea necesario.
 
 ---
 
