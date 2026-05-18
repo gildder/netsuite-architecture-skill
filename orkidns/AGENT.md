@@ -155,31 +155,64 @@ Automatically fixes architecture problems:
 
 ### orkidns normalize
 
-Fixes TypeScript files to ensure they compile correctly to NetSuite JavaScript. This command:
+Fixes TypeScript files to ensure they compile correctly to NetSuite JavaScript. Can normalize by **file** or by **folder**.
 
-1. Adds missing JSDoc headers (`@NApiVersion 2.1`, `@NModuleScope`)
-2. Fixes export format for NetSuite entry points
-3. Adds missing imports for NetSuite types
-4. Fixes common TypeScript issues
-
+#### Por archivo:
 ```
 USER: orkidns normalize "src/TypeScripts/Sales/invoice.ts"
 
-ORKIDNS RESPONSE:
-📝 Fixing: src/TypeScripts/Sales/invoice.ts
+ORKIDNS:
+📝 Normalizando: src/TypeScripts/Sales/invoice.ts
+  ✅ Tipo: Suitelet
+  ✅ + JSDoc
+  ✅ + EntryPoints
+  ✅ Archivo normalizado (2 cambios)
+```
 
-✅ Added JSDoc header:
-   - @NApiVersion 2.1
-   - @NModuleScope Public
-   - @NScriptType Suitelet
+#### Por carpeta:
+```
+USER: orkidns normalize "src/TypeScripts/Sales/"
 
-✅ Fixed exports:
-   - Added EntryPoints type for onRequest
-   - Changed export to NetSuite format
+ORKIDNS:
+📁 Normalizando carpeta: src/TypeScripts/Sales/
+   Archivos TypeScript: 12
 
-✅ Fixed imports:
-   - Added "N/types" for EntryPoints
-   - Kept "N/record" import
+[1/12] invoice.service.ts
+  📝 Normalizando: Sales/invoice.service.ts
+    ✅ Tipo: Suitelet
+    ✅ Ya está normalizado
+
+[2/12] invoice.entity.ts
+  📝 Normalizando: Sales/invoice.entity.ts
+    ✅ Tipo: Suitelet
+    ✅ + JSDoc
+    ✅ Normalizado (1 cambio)
+...
+
+✅ Resumen:
+   Procesados: 12
+   Modificados: 5
+```
+
+#### Correcciones automáticas:
+
+| Problema | Corrección |
+|----------|------------|
+| Falta @NApiVersion | Agrega `@NApiVersion 2.1` |
+| Falta @NModuleScope | Agrega `@NModuleScope Public` |
+| Falta @NScriptType | Auto-detecta según funciones |
+| Falta EntryPoints | Agrega `import { EntryPoints } from 'N/types'` |
+| record.Type string | Cambia a `record.Type.INVOICE` |
+
+#### Detección automática de tipo de script:
+
+| Función | → | Tipo |
+|---------|---|------|
+| `onRequest` | | Suitelet |
+| `pageInit` | | ClientScript |
+| `beforeSubmit/afterSubmit` | | UserEventScript |
+| `getInputData/map/reduce` | | MapReduceScript |
+| `execute` | | ScheduledScript |
 
 ---
 Before:
