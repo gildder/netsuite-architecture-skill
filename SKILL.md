@@ -244,11 +244,13 @@ Datos del proyecto:
 
 Ahora voy a:
 1. Clonar el repositorio template directamente en [ruta] (archivos en la raíz, sin subcarpeta)
-2. Configurar package.json, tsconfig.json
-3. Configurar deploy.xml (actualizar path de FileCabinet)
-4. Configurar manifest.xml (actualizar nombre del proyecto)
-5. Crear la estructura TypeScripts según tu clasificación
-6. Crear scripts NetSuite con prefijo [prefijo]_
+2. Eliminar archivos de ejemplo del template (TypeScripts y Objects)
+3. Configurar package.json, tsconfig.json
+4. Configurar deploy.xml (actualizar path de FileCabinet)
+5. Configurar manifest.xml (actualizar nombre del proyecto)
+6. Configurar biome.json (incluir JS compilados, agregar overrides)
+7. Crear estructura TypeScripts según tu clasificación
+8. Crear scripts NetSuite con prefijo [prefijo]_
 ```
 
 ---

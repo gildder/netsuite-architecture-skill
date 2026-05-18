@@ -38,6 +38,13 @@ git clone "$TEMPLATE_REPO" .
 echo "   ✓ Template clonado directamente en $RUTA"
 echo ""
 
+# 1.5. Eliminar archivos de ejemplo del template (TypeScripts y Objects)
+echo "🧹 1.5. Limpiando archivos de ejemplo del template..."
+rm -f "$RUTA/src/TypeScripts/idev-engineering-netsuite/"*.ts 2>/dev/null
+rm -f "$RUTA/src/Objects/customscript_idev_sl_hello_world.xml" 2>/dev/null
+echo "   ✓ Archivos de ejemplo eliminados"
+echo ""
+
 # 2. Actualizar package.json
 echo "📝 2. Actualizando package.json..."
 cd "$RUTA"
