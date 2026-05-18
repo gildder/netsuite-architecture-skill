@@ -16,7 +16,7 @@ description: |-
   - user: "crear proyecto sales" → hacer preguntas de clasificación
   - user: "nuevo proyecto para facturacion" → hacer preguntas + crear estructura
 ---
-compatibility: opencode,claude-code,cursor,codex
+compatibility: opencode
 metadata:
   version: "1.6"
   author: Gateway Team
