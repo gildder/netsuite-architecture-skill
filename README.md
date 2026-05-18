@@ -11,27 +11,67 @@ Guía para crear proyectos NetSuite con TypeScript usando arquitectura limpia.
 - ✅ Crea scripts NetSuite con prefijo personalizado
 - ✅ Soporta Clean Architecture y Hexagonal Architecture
 
-## Estructura de Archivos
+## Compatibilidad
 
-Este skill está configurado para funcionar con **OpenCode** y ser compatible con otros modelos de IA:
+Este skill es compatible con múltiples modelos y herramientas de IA:
+
+| Herramienta | Ubicación Skills | Ubicación Agentes |
+|-------------|------------------|-------------------|
+| **OpenCode** | `.opencode/skills/` | `.opencode/agents/` |
+| **Claude Code** | `.claude/skills/` | `.claude/agents/` |
+| **Cursor** | `.cursor/rules/` | `.cursor/agents/` |
+| **Windsurf** | `.windsurf/rules/` | (no soportado) |
+
+## Estructura de Archivos
 
 ```
 netsuite-architecture-skill/
-├── .opencode/
-│   ├── skills/
-│   │   └── netsuite-clean-architecture/
-│   │       └── SKILL.md          ← Ubicación OpenCode
-│   └── agents/
-│       └── orkidns/
-│           └── AGENT.md          ← Ubicación OpenCode
-├── orkidns/
-│   ├── AGENT.md                  ← Original (referencia)
-│   └── templates/
-├── SKILL.md                      ← Original (referencia)
-└── EXAMPLES.md                   ← Ejemplos de uso
+├── .opencode/                    ← OpenCode
+│   ├── skills/netsuite-clean-architecture/SKILL.md
+│   └── agents/orkidns/AGENT.md
+├── .claude/                      ← Claude Code
+│   ├── skills/netsuite-clean-architecture/SKILL.md
+│   └── agents/orkidns/AGENT.md
+├── .agents/                      ← Otros agentes
+│   └── skills/netsuite-clean-architecture/SKILL.md
+├── orkidns/AGENT.md              ← Referencia
+├── SKILL.md                      ← Original
+└── EXAMPLES.md                   ← Ejemplos
 ```
 
-## Instalación
+## Instalación por Herramienta
+
+### OpenCode
+
+```bash
+# Copiar estructura .opencode/
+cp -r .opencode/ /tu-proyecto/
+```
+
+O en `opencode.json`:
+```json
+{
+  "skills": {
+    "netsuite-clean-architecture": {
+      "path": "C:\\path\\to\\netsuite-architecture-skill"
+    }
+  }
+}
+```
+
+### Claude Code / Cursor / Windsurf
+
+```bash
+# Copiar estructura .claude/ o .cursor/
+cp -r .claude/ /tu-proyecto/
+```
+
+### GitHub CLI (agents)
+
+```bash
+# Usar con gh auth
+gh extension install github/agents
+```
 
 ### Opción 1: Copiar directamente al proyecto
 
