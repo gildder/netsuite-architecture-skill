@@ -57,10 +57,15 @@ sed -i 's/"esModuleInterop": true,//g' tsconfig.json
 echo "   ✓ tsconfig.json actualizado (sin esModuleInterop)"
 echo ""
 
-# 4. Corregir biome.json (patrón de include incorrecto)
+# 4. Corregir biome.json (patrón de include + overrides para JS compilados)
 echo "🔧 4. Corrigiendo biome.json..."
+# Corregir patrón de include (Windows fix)
 sed -i 's/\*\.{ts,json}/\*.ts", "\*.json/g' biome.json
-echo "   ✓ biome.json corregido (patrón de include)"
+# Agregar archivos JS compilados al include
+sed -i "s|src/FileCabinet/SuiteScripts/\[PROJECT_NAME\]|src/FileCabinet/SuiteScripts/$NOMBRE|g" biome.json
+# Agregar overrides para src/FileCabinet (desactivar linter, mantener formatter)
+sed -i '/"ignore": \["node_modules\/\*\*"\]/a\  },\n  "overrides": [\n    {\n      "include": ["src\/FileCabinet\/**"],\n      "linter": { "enabled": false },\n      "organizeImports": { "enabled": false }\n    }\n  ]' biome.json
+echo "   ✓ biome.json corregido (include + overrides)"
 echo ""
 
 # 5. Copiar script prepend-headers.js para inyección de JSDoc
@@ -71,10 +76,16 @@ cp "$SCRIPT_PATH" "$RUTA/scripts/prepend-headers.js"
 echo "   ✓ Script prepend-headers.js copiado"
 echo ""
 
-# 6. Actualizar package.json para incluir build con JSDoc
-echo "📝 6. Actualizando package.json (build con JSDoc)..."
-sed -i 's/"build": "tsc"/"build": "tsc \&\& node scripts\/prepend-headers.js"/g' package.json
-echo "   ✓ package.json actualizado (build con prepend-headers)"
+# 6. Actualizar package.json para incluir build completo (tsc + JSDoc + format)
+echo "📝 6. Actualizando package.json (build completo)..."
+sed -i "s|\"build\": \"tsc\"|\"build\": \"tsc \\&\\& node scripts/prepend-headers.js \\&\\& biome format --write src/FileCabinet/SuiteScripts/$NOMBRE\"|g" package.json
+# También corregir el script de lint
+sed -i "s|\"lint\": \"biome check \.\"|\"lint\": \"biome check src/TypeScripts/$NOMBRE\"|g" package.json
+# Agregar script format si no existe
+if ! grep -q '"format":' package.json; then
+    sed -i 's|"lint:fix": "biome check --write ."|"format": "biome format --write src/FileCabinet/SuiteScripts/'$NOMBRE'",\n    "lint:fix": "biome check --write src/TypeScripts/'$NOMBRE'"|g' package.json
+fi
+echo "   ✓ package.json actualizado (build: tsc + prepend-headers + biome format)"
 echo ""
 
 # 5. Actualizar deploy.xml

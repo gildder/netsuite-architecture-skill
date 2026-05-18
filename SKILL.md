@@ -463,6 +463,43 @@ var __createBinding = (this && this.__createBinding) || ...
 
 ---
 
+#### Problema 4: Formatear JS compilados
+
+**Síntoma:** El JavaScript compilado por tsc es compacto y difícil de leer.
+
+**Solución:** Agregar Biome como paso de formateo al pipeline de build.
+
+**biome.json - configuración completa:**
+```json
+{
+  "files": {
+    "include": ["**/*.ts", "**/*.json", "src/FileCabinet/SuiteScripts/[PROYECTO]/**/*.js"],
+    "ignore": ["node_modules/**"]
+  },
+  "overrides": [
+    {
+      "include": ["src/FileCabinet/**"],
+      "linter": { "enabled": false },
+      "organizeImports": { "enabled": false }
+    }
+  ]
+}
+```
+
+**Orden del build (obligatorio):**
+1. `tsc` - compila TypeScript → JavaScript
+2. `node scripts/prepend-headers.js` - inyecta JSDoc @NScriptType
+3. `biome format` - formatea los JS compilados
+
+**package.json:**
+```json
+"build": "tsc && node scripts/prepend-headers.js && biome format --write src/FileCabinet/SuiteScripts/mi-proyecto"
+```
+
+**Por qué usar overrides:** No queremos que Biome lint los archivos compilados (son output, no source), pero sí queremos que los formatee.
+
+---
+
 ### tsconfig.json Recomendado
 
 ```json
