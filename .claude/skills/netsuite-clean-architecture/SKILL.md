@@ -25,6 +25,40 @@ metadata:
 
 # NetSuite Clean Architecture - Skill Guide
 
+## 📦 Instalación en Claude Code
+
+### Paso 1: Instalar el skill
+
+```bash
+claudeskill install gildder/netsuite-architecture-skill
+```
+
+### Paso 2: Crear estructura .claude/
+
+Después de instalar, ejecutar el script de configuración:
+
+```powershell
+# Desde la raíz de tu proyecto
+powershell -ExecutionPolicy Bypass -File .agents/skills/netsuite-clean-architecture/scripts/install-claude.ps1
+```
+
+O manualmente:
+
+```bash
+mkdir -p .claude/skills/netsuite-clean-architecture
+mkdir -p .claude/agents/orkidns
+
+cp .agents/skills/netsuite-clean-architecture/SKILL.md .claude/skills/netsuite-clean-architecture/
+cp .agents/skills/netsuite-clean-architecture/AGENT.md .claude/agents/orkidns/ 2>/dev/null || \
+cp .agents/skills/netsuite-clean-architecture/orkidns/AGENT.md .claude/agents/orkidns/
+```
+
+### Paso 3: Listo!
+
+Reiniciá Claude Code y el skill estará disponible.
+
+---
+
 ## ⚠️ IMPORTANTE: Flujo de Preguntas
 
 **Este skill debe hacer las preguntas UNA A LA VEZ.**
