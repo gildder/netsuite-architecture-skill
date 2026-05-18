@@ -2,6 +2,37 @@
 
 A reusable skill for AI assistants to create and manage NetSuite TypeScript projects with Clean Architecture patterns.
 
+---
+
+## 🎯 Quick Start
+
+### Para usuarios nuevos
+
+1. **Leer la guía**: [GUIA-USUARIO.md](references/GUIA-USUARIO.md)
+2. **Crear un proyecto**:
+   ```powershell
+   cd scripts
+   .\create-project.ps1 -Ruta "C:\proyectos\mi-proyecto" -Nombre "mi-proyecto" -Dominio "Sales" -Tipo "pequeno" -Prefijo "gw"
+   ```
+
+### Para usar OrkidNS
+
+1. **Leer la guía**: [GUIA-ORKIDNS.md](references/GUIA-ORKIDNS.md)
+2. **Inicializar**:
+   ```powershell
+   .\orkidns.ps1 init
+   ```
+3. **Validar**:
+   ```powershell
+   .\orkidns.ps1 check
+   ```
+
+### ¿Problemas?
+
+Consultá **[TROUBLESHOOTING.md](references/TROUBLESHOOTING.md)** para soluciones.
+
+---
+
 ## What Is This?
 
 A **skill** is a reusable instruction bundle that AI assistants can discover and load on-demand when needed. This skill provides:
@@ -164,14 +195,41 @@ netsuite-architecture-skill/
 ├── orkidns/                    # Reference files
 │   ├── AGENT.md
 │   ├── orkidns.config.json
+│   ├── inference-rules.json
 │   └── templates/
-├── scripts/                    # Build scripts
-│   ├── create-project.sh
-│   ├── prepend-headers.js
-│   └── normalize-ts.ps1
+│       ├── entity.template.ts
+│       ├── service.template.ts
+│       ├── repository.template.ts
+│       ├── port.template.ts
+│       ├── adapter.template.ts
+│       ├── usecase.template.ts
+│       ├── validation.template.ts
+│       ├── clientscript.template.ts
+│       ├── userevent.template.ts
+│       ├── mapreduce.template.ts
+│       ├── scheduled.template.ts
+│       └── portlet.template.ts
+├── scripts/                    # Build scripts (PowerShell + Bash)
+│   ├── create-project.ps1       # Main project creator (Windows)
+│   ├── create-project.sh        # Main project creator (Linux/macOS)
+│   ├── create-small.ps1         # Small project generator
+│   ├── create-small.sh
+│   ├── create-medium.ps1        # Medium project generator
+│   ├── create-medium.sh
+│   ├── create-large.ps1         # Large project generator
+│   ├── create-large.sh
+│   ├── normalize-ts.ps1         # TypeScript normalizer
+│   ├── normalize-ts.sh
+│   ├── orkidns.ps1              # OrkidNS CLI executable
+│   ├── orkidns-handler.ps1
+│   ├── generate-sdf.ps1         # Generate customscript XMLs
+│   └── prepend-headers.js       # JSDoc injector
 ├── templates/                  # Config templates
 ├── SKILL.md                    # Main skill (root)
 ├── AGENT.md                    # Agent reference
+├── ARCHITECTURE.md             # Architecture guide
+├── EXAMPLES.md                 # Usage examples
+├── TROUBLESHOOTING.md           # Common problems and solutions
 └── README.md                   # This file
 ```
 
@@ -183,7 +241,7 @@ netsuite-architecture-skill/
 
 ## Examples
 
-See [EXAMPLES.md](EXAMPLES.md) for detailed usage examples.
+See [EXAMPLES.md](references/EXAMPLES.md) for detailed usage examples.
 
 ## License
 
