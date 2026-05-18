@@ -69,26 +69,30 @@ if (Test-Path $skillSrc) {
     Write-Host "  ✅ .claude/skills/netsuite-clean-architecture/SKILL.md" -ForegroundColor Green
 }
 
-# Copiar AGENT.md
-$agentSrc = Join-Path $SkillPath "AGENT.md"
-if (-not $agentSrc -or -not (Test-Path $agentSrc)) {
-    $agentSrc = Join-Path $SkillPath "orkidns/AGENT.md"
-}
-if (-not $agentSrc -or -not (Test-Path $agentSrc)) {
-    $agentSrc = Join-Path $SkillPath "../orkidns/AGENT.md"
+# Copiar AGENT.md - buscar en varias ubicaciones posibles
+$agentSrc = $null
+
+# Buscar en diferentes ubicaciones del skill instalado
+$searchPaths = @(
+    (Join-Path $SkillPath "..\.claude\agents\orkidns\AGENT.md"),
+    (Join-Path $SkillPath "..\orkidns\AGENT.md"),
+    (Join-Path $SkillPath "orkidns\AGENT.md"),
+    (Join-Path $SkillPath "AGENT.md")
+)
+
+foreach ($path in $searchPaths) {
+    if (Test-Path $path) {
+        $agentSrc = $path
+        break
+    }
 }
 
-if (Test-Path $agentSrc) {
+if ($agentSrc) {
     Copy-Item -Path $agentSrc -Destination ".claude/agents/orkidns/AGENT.md" -Force
     Write-Host "  ✅ .claude/agents/orkidns/AGENT.md" -ForegroundColor Green
 } else {
-    Write-Host "  ⚠ AGENT.md no encontrado, buscando..." -ForegroundColor Yellow
-    # Buscar AGENT.md en cualquier parte del skill
-    $agentSearch = Get-ChildItem -Path $SkillPath -Filter "AGENT.md" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1
-    if ($agentSearch) {
-        Copy-Item -Path $agentSearch.FullName -Destination ".claude/agents/orkidns/AGENT.md" -Force
-        Write-Host "  ✅ .claude/agents/orkidns/AGENT.md" -ForegroundColor Green
-    }
+    Write-Host "  ⚠ AGENT.md no encontrado en el skill instalado" -ForegroundColor Yellow
+    Write-Host "    El subagente orkidns no estará disponible" -ForegroundColor Gray
 }
 
 # Copiar scripts si existen
