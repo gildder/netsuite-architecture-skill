@@ -74,7 +74,12 @@ Este skill incluye **OrkidNS**, un agente para validar y generar código siguien
 | `orkidns list` | Listar componentes |
 | `orkidns init` | Inicializar en proyecto |
 | `orkidns fix` | Corregir problemas |
+| `orkidns normalize` | Corregir TypeScript al formato NetSuite |
 | `orkidns hint` | Sugerencias |
+
+### Ejemplos de uso
+
+Ver [EXAMPLES.md](EXAMPLES.md) para ejemplos detallados de cada comando.
 
 ### Configuración
 
@@ -104,6 +109,7 @@ Ver `orkidns/AGENT.md` para documentación completa.
 - [SKILL.md](SKILL.md) - Guía completa del skill
 - [ARCHITECTURE.md](ARCHITECTURE.md) - Explicación de arquitecturas
 - [orkidns/AGENT.md](orkidns/AGENT.md) - Documentación del agente
+- [EXAMPLES.md](EXAMPLES.md) - Ejemplos prácticos de uso
 
 ## Template
 
