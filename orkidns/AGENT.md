@@ -14,6 +14,7 @@ OrkidNS (Orkestador NetSuite) is a sub-agent that validates and generates code f
 | `orkidns list` | List all project components |
 | `orkidns init` | Initialize OrkidNS in a project |
 | `orkidns fix` | Fix architecture problems |
+| `orkidns normalize` | Fix TypeScript to NetSuite format |
 | `orkidns hint` | Suggest improvements based on existing code |
 
 ---
@@ -147,6 +148,88 @@ Automatically fixes architecture problems:
 ✅ Fixed: src/Modules/Sales/Application/services/vtex.adapter.ts
    → src/Modules/Sales/Infrastructure/adapters/vtex.adapter.ts
 ```
+
+---
+
+### orkidns normalize
+
+Fixes TypeScript files to ensure they compile correctly to NetSuite JavaScript. This command:
+
+1. Adds missing JSDoc headers (`@NApiVersion 2.1`, `@NModuleScope`)
+2. Fixes export format for NetSuite entry points
+3. Adds missing imports for NetSuite types
+4. Fixes common TypeScript issues
+
+```
+USER: orkidns normalize "src/TypeScripts/Sales/invoice.ts"
+
+ORKIDNS RESPONSE:
+📝 Fixing: src/TypeScripts/Sales/invoice.ts
+
+✅ Added JSDoc header:
+   - @NApiVersion 2.1
+   - @NModuleScope Public
+   - @NScriptType Suitelet
+
+✅ Fixed exports:
+   - Added EntryPoints type for onRequest
+   - Changed export to NetSuite format
+
+✅ Fixed imports:
+   - Added "N/types" for EntryPoints
+   - Kept "N/record" import
+
+---
+Before:
+```typescript
+import record from 'N/record';
+
+export function onRequest(context) {
+  const rec = record.create({ type: 'invoice' });
+  context.response.write('Hello');
+}
+```
+
+After:
+```typescript
+/**
+ * @NApiVersion 2.1
+ * @NModuleScope Public
+ * @NScriptType Suitelet
+ */
+
+import record from 'N/record';
+import { EntryPoints } from 'N/types';
+
+export let onRequest: EntryPoints.Suitelet.onRequest = (context) => {
+  const rec = record.create({ type: record.Type.INVOICE });
+  context.response.write('Hello');
+};
+```
+```
+
+#### Auto-detection of Script Type
+
+OrkidNS analyzes the file content to detect the script type:
+
+| Content Pattern | → | Script Type |
+|----------------|---|-------------|
+| `onRequest` | | Suitelet |
+| `pageInit` | | ClientScript |
+| `beforeSubmit` / `afterSubmit` | | UserEvent |
+| `getInputData` / `map` / `reduce` / `summarize` | | MapReduce |
+| `execute` | | Scheduled |
+
+#### Fixes Applied
+
+| Issue | Fix Applied |
+|-------|-------------|
+| Missing JSDoc | Adds `@NApiVersion 2.1`, `@NModuleScope Public` |
+| Missing @NScriptType | Auto-detects based on function names |
+| Wrong export format | Converts to NetSuite entry point format |
+| Missing EntryPoints import | Adds `import { EntryPoints } from 'N/types'` |
+| Non-existent types | Fixes to correct NetSuite types |
+| record.Type string | Changes to `record.Type.INVOICE` (enum) |
 
 ---
 

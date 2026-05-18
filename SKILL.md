@@ -527,6 +527,7 @@ Para crear y validar componentes siguiendo la arquitectura, usá el agente **Ork
 | `orkidns list` | Listar componentes del proyecto |
 | `orkidns init` | Inicializar OrkidNS en un proyecto |
 | `orkidns fix` | Corregir problemas de arquitectura |
+| `orkidns normalize` | Corregir TypeScript al formato NetSuite |
 | `orkidns hint` | Dar sugerencias basadas en código existente |
 
 ### Ejemplo de uso
@@ -558,6 +559,50 @@ Componentes sugeridos:
 | "CRUD" | | Entity + Service + Repository + Validation + Transform |
 | "api" | | Port + Adapter |
 | "programado" | | Scheduled |
+
+### orkidns normalize
+
+Corrige archivos TypeScript para que compilen correctamente a JavaScript de NetSuite.
+
+**Ejemplo de uso:**
+
+```
+USER: orkidns normalize "src/TypeScripts/Sales/invoice.ts"
+
+ORKIDNS:
+📝 Corrigiendo: src/TypeScripts/Sales/invoice.ts
+
+✅ Agregado JSDoc:
+   - @NApiVersion 2.1
+   - @NModuleScope Public
+   - @NScriptType Suitelet
+
+✅ Corregido export:
+   - Cambiado a formato NetSuite EntryPoints
+
+✅ Corregido imports:
+   - Agregado "N/types" para EntryPoints
+```
+
+**Correcciones automáticas:**
+
+| Problema | Corrección |
+|----------|------------|
+| Falta JSDoc | Agrega `@NApiVersion 2.1`, `@NModuleScope Public` |
+| Falta @NScriptType | Auto-detecta según nombre de función |
+| Export incorrecto | Convierte al formato de NetSuite |
+| Falta EntryPoints | Agrega `import { EntryPoints } from 'N/types'` |
+| record.Type string | Cambia a `record.Type.INVOICE` (enum) |
+
+**Detección automática de tipo de script:**
+
+| Función detectada | → | Tipo de Script |
+|-----------------|---|----------------|
+| `onRequest` | | Suitelet |
+| `pageInit` | | ClientScript |
+| `beforeSubmit` / `afterSubmit` | | UserEvent |
+| `getInputData` / `map` / `reduce` | | MapReduce |
+| `execute` | | Scheduled |
 
 ### Para usar OrkidNS
 
