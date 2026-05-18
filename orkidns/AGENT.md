@@ -325,4 +325,74 @@ src/TypeScripts/[project]/
 
 This agent is configured in opencode.json and can be invoked using the commands above.
 
+---
+
+## Configuración en Otros Proyectos
+
+Para usar OrkidNS en otros proyectos, agregá esta configuración al `opencode.json` del proyecto:
+
+```json
+{
+  "skills": {
+    "netsuite-clean-architecture": {
+      "path": "C:\\Users\\gguerrero\\Documents\\000 desarrollo\\netsuite-architecture-skill",
+      "description": "Guía para proyectos NetSuite con TypeScript y Clean Architecture"
+    }
+  },
+  "agent": {
+    "orkidns": {
+      "description": "Valida y genera código siguiendo la arquitectura NetSuite. Commands: add, check, info, list, init, fix, normalize, hint",
+      "mode": "subagent",
+      "color": "#8B5CF6",
+      "tools": {
+        "bash": true,
+        "read": true,
+        "write": true,
+        "grep": true,
+        "glob": true
+      },
+      "permission": {
+        "bash": {
+          "cd *": "allow",
+          "mkdir *": "allow",
+          "Get-ChildItem *": "allow",
+          "Test-Path *": "allow",
+          "Get-Content *": "allow",
+          "pwsh *normalize-ts.ps1 *": "allow",
+          "powershell *normalize-ts.ps1 *": "allow",
+          "*": "ask"
+        },
+        "write": {
+          "New-Item *": "allow",
+          "Set-Content *": "allow",
+          "*": "ask"
+        }
+      }
+    }
+  }
+}
+```
+
+### Ubicación del script de normalización
+
+El script `normalize-ts.ps1` está en:
+```
+C:\Users\gguerrero\Documents\000 desarrollo\netsuite-architecture-skill\scripts\normalize-ts.ps1
+```
+
+### Ejemplo de uso en otro proyecto
+
+Una vez configurado en el proyecto:
+
+```
+USER: orkidns normalize "src/TypeScripts/MiProyecto/Sales/invoice.ts"
+
+ORKIDNS:
+📝 Normalizando: src/TypeScripts/MiProyecto/Sales/invoice.ts
+✅ Tipo de script detectado: Suitelet
+✅ Agregado JSDoc con @NApiVersion 2.1 y @NScriptType Suitelet
+✅ Agregado import de EntryPoints
+✅ Archivo normalizado
+```
+
 For full skill documentation, see SKILL.md.
